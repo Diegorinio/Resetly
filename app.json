@@ -2,7 +2,7 @@
   "configVersion": "v3",
   "app": {
     "appId": 27058,
-    "appName": "Hello World",
+    "appName": "Resetly",
     "appType": "app",
     "version": {
       "code": 1,
@@ -10,7 +10,7 @@
     },
     "icon": "icon.png",
     "vender": "zepp",
-    "description": "hello world app"
+    "description": "App to control your addictions"
   },
   "permissions": [
     "data:os.device.info",
