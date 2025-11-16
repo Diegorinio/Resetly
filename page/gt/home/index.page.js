@@ -23,19 +23,14 @@ Page({
   },
   build() {
     LOGO.Draw();
-    let xd=1;
     logger.debug("page build invoked");
-    const text = new GameObject.Text(100,100,50,50,20,"sss",COLORS.AMBER);
-    const itttem=new RTLY.Item(0,"Test",0);
+    const itttem=new RTLY.Item(0,"Test",523100);
     const itemElement=new RTLY.ItemElement(0,0,DEVICE_WIDTH,100,itttem);
     itemElements.push(itemElement);
     ItemContainer.AddWidget(itemElement);
     ItemContainer.InitializeWidgets();
     ItemContainer.AddScrollSpacer(1);
-    // itemElement.Draw();
     GlobalLoop.OnTick(()=>{
-      // text.SetText(xd);
-      // text.Draw();
       itemElements.forEach(el=>{
         el.OnTick();
       })

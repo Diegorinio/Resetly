@@ -38,10 +38,11 @@ export class ItemElement extends GameObject{
       const right=this.width*0.30;
       this.titleLabel=new Text(left-50,this.y,left,this.height,this.height/4,item.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
 
-      this.timerLabel=new Text(this.titleLabel.x+this.titleLabel.width,this.y,middle,this.height,this.height/4,item.time,COLORS.WHITE,null);
+      this.timerText=new Text(this.titleLabel.x+this.titleLabel.width,this.y,middle,this.height/2,this.height/5,"Absence time",COLORS.WHITE);
+      this.timerLabel=new Text(this.titleLabel.x+this.titleLabel.width,this.timerText.y+this.timerText.height/4,middle,this.height,this.height/4,item.time,COLORS.WHITE,null);
 
-      this.startButton=new Button(left+middle,this.y,100,this.height,"EDIT",COLORS.RED,COLORS.BLACK,null,this.ToggleTimer,12);
-      this.Widgets.push(this.titleLabel,this.timerLabel,this.startButton);
+      this.startButton=new Button(this.x+this.width-100,this.y+5,100,this.height-10,"EDIT",COLORS.RED,COLORS.BLACK,null,this.ToggleTimer,12,null,this.height/4);
+      this.Widgets.push(this.titleLabel,this.timerText,this.timerLabel,this.startButton);
     }
 
     Draw=()=>{
@@ -51,7 +52,9 @@ export class ItemElement extends GameObject{
     }
 
     Update=()=>{
-      this.timerLabel.widget.setProperty(hmUI.prop.TEXT, this.time.toString());
+      const currentTime=this.time;
+      const _timeString=formatTime(currentTime);
+      this.timerLabel.widget.setProperty(hmUI.prop.TEXT,_timeString);
     }
 
     OnTick=()=>{
@@ -78,3 +81,23 @@ export class Item{
   }
 }
 
+
+export function formatTime(totalSeconds) {
+    const d = Math.floor(totalSeconds / 86400);
+    totalSeconds %= 86400;
+
+    const g = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+
+    let parts = [];
+
+    if (d > 0) parts.push(`${d}d`);
+    if (g > 0) parts.push(`${g}g`);
+    if (m > 0) parts.push(`${m}m`);
+    if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+
+    return parts.join(" ");
+}
