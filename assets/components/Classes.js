@@ -889,3 +889,20 @@ export class Arc extends GameObject{
     this.widget=hmUI.createWidget(this.widgetType,this.GetParams());
   }
 }
+
+export class Container{
+  constructor(items=[]){
+    this.Widgets=items;
+  }
+  Draw=()=>{
+    if(this.Widgets){
+      this.Widgets.forEach(element => {
+        element.Draw();
+      });
+    }
+  }
+
+  AddItem=(item)=>{
+    this.Widgets.push(item);
+  }
+}

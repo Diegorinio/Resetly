@@ -14,6 +14,9 @@ export class GameLoop{
     this.deltaTime=this.tickRate/1000;
     GameLoop.instance=this;
   }
+  SetTick=(tick=100)=>{
+    this.tickRate=tick;
+  }
   Start = ()=>{
     if (this.interval) return;
     this.interval = setInterval(() => {
