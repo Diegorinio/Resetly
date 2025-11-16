@@ -1,5 +1,6 @@
 import * as hmUI from "@zos/ui";
 import * as hmRoute from "@zos/router";
+import {Time} from "@zos/sensor";
 import { log, log as Logger } from "@zos/utils";
 import * as GameObject from "../../../assets/components/Classes";
 import {COLORS} from "../../../assets/components/colors";
@@ -18,19 +19,30 @@ Page({
   style:{
     titleBar:false
   },
-  onInit() {
+  onInit(params) {
+    if(params!=null && params!=""){
+      const itemParams=JSON.parse(params);
+      items.push(new RTLY.Item(items.length+1,itemParams.item.title,itemParams.item.time));
+    }
     hmUI.setStatusBarVisible(false);
     logger.debug("page onInit invoked");
   },
   build() {
+    // hmRoute.push({url:"/page/gt/home/index.new_item_page"});
     LOGO.Draw();
     logger.debug("page build invoked");
-    const itttem=new RTLY.Item(0,"Test",523100);
-    const itemElement=new RTLY.ItemElement(0,0,DEVICE_WIDTH,100,itttem);
-    itemElements.push(itemElement);
-    ItemContainer.AddWidget(itemElement);
-    ItemContainer.InitializeWidgets();
-    ItemContainer.AddScrollSpacer(1);
+    // const itttem=new RTLY.Item(0,"Test",523100);
+    items.forEach(item=>{
+      const _element = new RTLY.ItemElement(0,100,DEVICE_WIDTH,100,item);
+      _element.Active=true;
+      itemElements.push(_element);
+      ItemContainer.AddWidget(_element);
+      ItemContainer.InitializeWidgets();
+    })
+    // const itemElement=new RTLY.ItemElement(0,0,DEVICE_WIDTH,100,itttem);
+    // itemElements.push(itemElement);
+    // ItemContainer.AddWidget(itemElement);
+    // ItemContainer.AddScrollSpacer(1);
     GlobalLoop.OnTick(()=>{
       itemElements.forEach(el=>{
         el.OnTick();
@@ -46,13 +58,13 @@ Page({
 });
 
 function CreateNewItem(){
-  new_item=new RTLY.Item(items.length+1,"Item "+items.length+1,0);
-  items.push(new_item);
-  const last_item=itemElements[items.length-1];
-  const new_itemElement=new RTLY.ItemElement(0,last_item.y+last_item.height+5,last_item.width,last_item.height,new_item);
-  itemElements.push(new_itemElement)
-  ItemContainer.AddWidget(new_itemElement);
-  ItemContainer.InitializeWidgets();
+  // new_item=new RTLY.Item(items.length+1,"Item "+items.length+1,0);
+  // items.push(new_item);
+  // const last_item=itemElements[items.length-1];
+  // const new_itemElement=new RTLY.ItemElement(0,last_item.y+last_item.height+5,last_item.width,last_item.height,new_item);
+  // itemElements.push(new_itemElement)
+  // ItemContainer.AddWidget(new_itemElement);
+  // ItemContainer.InitializeWidgets();
   hmRoute.push({url:"/page/gt/home/index.new_item_page"});
 }
 

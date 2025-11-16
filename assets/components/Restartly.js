@@ -1,6 +1,8 @@
+import { DEVICE_WIDTH } from "../../page/gt/home/index.page.r.layout";
 import { GameObject, Rect,Text,Button} from "./Classes";
 import { COLORS } from "./colors";
 import * as hmUI from "@zos/ui";
+import {Time} from "@zos/sensor";
 import { log, log as Logger } from "@zos/utils";
 export class ItemElement extends GameObject{
   constructor(x,y,width,height,item=null){
@@ -20,7 +22,6 @@ export class ItemElement extends GameObject{
     this.Active=false;
     if(item!=null){
       this.assignedItem=item;
-      Logger.debug(item.title);
       this.AssignItem(item);
     }
   }
@@ -52,14 +53,14 @@ export class ItemElement extends GameObject{
     }
 
     Update=()=>{
-      const currentTime=this.time;
-      const _timeString=formatTime(currentTime);
+      const now=new Time().getTime();
+      const diff=now-this.time;
+      const _timeString=formatTime(diff);
       this.timerLabel.widget.setProperty(hmUI.prop.TEXT,_timeString);
     }
 
     OnTick=()=>{
       if(this.Active){
-        this.time+=1;
         this.Update();
       }
     }
@@ -82,7 +83,10 @@ export class Item{
 }
 
 
-export function formatTime(totalSeconds) {
+export function formatTime(ms) {
+    // zamiana ms na sekundy
+    let totalSeconds = Math.floor(ms / 1000);
+
     const d = Math.floor(totalSeconds / 86400);
     totalSeconds %= 86400;
 
@@ -102,6 +106,7 @@ export function formatTime(totalSeconds) {
     return parts.join(" ");
 }
 
+
 export class Keyboard {
   constructor(opts) {
     this.x = opts.x || 0;
@@ -110,78 +115,118 @@ export class Keyboard {
     this.onSubmit = opts.onSubmit || (() => {});
     this.shift = false;
     this.value = "";
+    this.OnClose=opts.OnClose||(()=>{});
 
-    this.buttons = []; // przechowujemy referencje do przycisków
+    this.buttons = [];
     this._buildUI();
   }
 
   _buildUI() {
-    // Tekst nad klawiaturą
+    const SCREEN_W = DEVICE_WIDTH;
+    const spacing = 5;
+    const margin = 10;
+
+    // Wyświetlany tekst
     this.textBox = hmUI.createWidget(hmUI.widget.TEXT, {
       x: 0,
       y: this.y - 60,
-      w: 480,
+      w: SCREEN_W,
       h: 50,
       text: "",
       text_size: 28,
       align_h: hmUI.align.CENTER_H
     });
 
-    // Układ QWERTY
+    // Rzędy klawiszy, z przyciskiem CLOSE
     const rows = [
       ["q","w","e","r","t","y","u","i","o","p"],
       ["a","s","d","f","g","h","j","k","l"],
       ["shift","z","x","c","v","b","n","m","back"],
-      ["space","enter"]
+      ["close","space","enter"]  // ← NOWY RZĄD Z CLOSE
     ];
 
     let yOffset = this.y;
 
     rows.forEach(row => {
-      let xOffset = 10;
+      let xOffset = margin;
+
+      // Dynamiczne dopasowanie dla rzędów bez specjalnych przycisków
+      let keyWidth = 40;
+      if (!(row.includes("space") || row.includes("enter") || row.includes("close"))) {
+        const totalSpacing = spacing * (row.length - 1);
+        const usableWidth = SCREEN_W - margin * 2 - totalSpacing;
+        keyWidth = Math.floor(usableWidth / row.length);
+      }
+
       row.forEach(key => {
-        const label = key === "space" ? "␣" : key === "back" ? "←" : key === "shift" ? "⇧" : key === "enter" ? "⏎" : key;
-        const w = key === "space" ? 300 : 40;
-        const h = 40;
+        let w = keyWidth;
+
+        // Szerokości specjalnych przycisków
+        if (key === "close") w = SCREEN_W * 0.15;
+        if (key === "space") w = SCREEN_W * 0.60;
+        if (key === "enter") w = SCREEN_W * 0.25;
+
+        // Ikony
+        const label = key === "space" ? "␣" :
+                      key === "back"  ? "←" :
+                      key === "shift" ? "⇧" :
+                      key === "enter" ? "⏎" :
+                      key === "close" ? "✕" : key;
 
         const btn = hmUI.createWidget(hmUI.widget.BUTTON, {
           x: xOffset,
           y: yOffset,
           w: w,
-          h: h,
+          h: 40,
           text: label,
           text_size: 20,
           click_func: () => this._onKeyPress(key)
         });
 
         this.buttons.push(btn);
-        xOffset += w + 5;
+        xOffset += w + spacing;
       });
+
       yOffset += 50;
     });
   }
 
   _onKeyPress(key) {
+    // Zamykanie klawiatury
+    if (key === "close") {
+      this.Hide();
+      this.OnClose();
+      return;
+    }
+
+    // Submit
     if (key === "enter") {
       this.onSubmit(this.value);
       return;
     }
+
+    // Backspace
     if (key === "back") {
       this.value = this.value.slice(0, -1);
       this._updateText();
       return;
     }
+
+    // Shift
     if (key === "shift") {
       this.shift = !this.shift;
       return;
     }
+
+    // Spacja
     if (key === "space") {
       this.value += " ";
       this._updateText();
       return;
     }
 
-    let ch = this.shift ? key.toUpperCase() : key;
+    // Litery
+    const ch = this.shift ? key.toUpperCase() : key;
     this.value += ch;
     this._updateText();
   }
@@ -190,5 +235,20 @@ export class Keyboard {
     this.textBox.setProperty(hmUI.prop.TEXT, this.value);
     this.onChange(this.value);
   }
+
+  Show() {
+    this.textBox.setProperty(hmUI.prop.VISIBLE, true);
+    this.buttons.forEach(btn => {
+      btn.setProperty(hmUI.prop.VISIBLE, true);
+    });
+  }
+
+  Hide() {
+    this.textBox.setProperty(hmUI.prop.VISIBLE, false);
+    this.buttons.forEach(btn => {
+      btn.setProperty(hmUI.prop.VISIBLE, false);
+    });
+  }
 }
+
 
