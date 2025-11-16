@@ -1,4 +1,5 @@
 import * as hmUI from "@zos/ui";
+import * as hmRoute from "@zos/router";
 import { log, log as Logger } from "@zos/utils";
 import * as GameObject from "../../../assets/components/Classes";
 import {COLORS} from "../../../assets/components/colors";
@@ -52,4 +53,6 @@ function CreateNewItem(){
   itemElements.push(new_itemElement)
   ItemContainer.AddWidget(new_itemElement);
   ItemContainer.InitializeWidgets();
+  hmRoute.push({url:"/page/gt/home/index.new_item_page"});
 }
+

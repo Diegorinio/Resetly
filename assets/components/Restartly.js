@@ -101,3 +101,94 @@ export function formatTime(totalSeconds) {
 
     return parts.join(" ");
 }
+
+export class Keyboard {
+  constructor(opts) {
+    this.x = opts.x || 0;
+    this.y = opts.y || 200;
+    this.onChange = opts.onChange || (() => {});
+    this.onSubmit = opts.onSubmit || (() => {});
+    this.shift = false;
+    this.value = "";
+
+    this.buttons = []; // przechowujemy referencje do przycisków
+    this._buildUI();
+  }
+
+  _buildUI() {
+    // Tekst nad klawiaturą
+    this.textBox = hmUI.createWidget(hmUI.widget.TEXT, {
+      x: 0,
+      y: this.y - 60,
+      w: 480,
+      h: 50,
+      text: "",
+      text_size: 28,
+      align_h: hmUI.align.CENTER_H
+    });
+
+    // Układ QWERTY
+    const rows = [
+      ["q","w","e","r","t","y","u","i","o","p"],
+      ["a","s","d","f","g","h","j","k","l"],
+      ["shift","z","x","c","v","b","n","m","back"],
+      ["space","enter"]
+    ];
+
+    let yOffset = this.y;
+
+    rows.forEach(row => {
+      let xOffset = 10;
+      row.forEach(key => {
+        const label = key === "space" ? "␣" : key === "back" ? "←" : key === "shift" ? "⇧" : key === "enter" ? "⏎" : key;
+        const w = key === "space" ? 300 : 40;
+        const h = 40;
+
+        const btn = hmUI.createWidget(hmUI.widget.BUTTON, {
+          x: xOffset,
+          y: yOffset,
+          w: w,
+          h: h,
+          text: label,
+          text_size: 20,
+          click_func: () => this._onKeyPress(key)
+        });
+
+        this.buttons.push(btn);
+        xOffset += w + 5;
+      });
+      yOffset += 50;
+    });
+  }
+
+  _onKeyPress(key) {
+    if (key === "enter") {
+      this.onSubmit(this.value);
+      return;
+    }
+    if (key === "back") {
+      this.value = this.value.slice(0, -1);
+      this._updateText();
+      return;
+    }
+    if (key === "shift") {
+      this.shift = !this.shift;
+      return;
+    }
+    if (key === "space") {
+      this.value += " ";
+      this._updateText();
+      return;
+    }
+
+    let ch = this.shift ? key.toUpperCase() : key;
+    this.value += ch;
+    this._updateText();
+  }
+
+  _updateText() {
+    this.textBox.setProperty(hmUI.prop.TEXT, this.value);
+    this.onChange(this.value);
+  }
+}
+
