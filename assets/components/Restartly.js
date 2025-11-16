@@ -51,8 +51,7 @@ export class ItemElement extends GameObject{
     }
 
     Update=()=>{
-      this.timerLabel.SetText(this.time);
-      this.Draw();
+      this.timerLabel.widget.setProperty(hmUI.prop.TEXT, this.time.toString());
     }
 
     OnTick=()=>{

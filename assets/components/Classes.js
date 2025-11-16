@@ -817,6 +817,12 @@ export class ViewContainer extends GameObject{
   }
 
   AddWidget = (w)=>{
+    if(w.widgetType==null||w.widgetType==undefined){
+      w.Widgets.forEach(el=>{
+        this.Widgets.push(el);
+      })
+      return;
+    }
     this.Widgets.push(w);
     // this.InitializeWidgets();
   }
