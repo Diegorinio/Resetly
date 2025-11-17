@@ -21,14 +21,14 @@ Page({
   },
   onInit(params) {
     if(params!=null && params!=""){
-      const itemParams=JSON.parse(params);
+      const itemParams=JSON.stringify(params);
       items.push(new RTLY.Item(items.length+1,itemParams.item.title,itemParams.item.time));
     }
     hmUI.setStatusBarVisible(false);
     logger.debug("page onInit invoked");
   },
   build() {
-    // hmRoute.push({url:"/page/gt/home/index.new_item_page"});
+    hmRoute.push({url:"/page/gt/home/index.new_item_page"});
     LOGO.Draw();
     logger.debug("page build invoked");
     // const itttem=new RTLY.Item(0,"Test",523100);
