@@ -116,20 +116,20 @@ Page({
     //     }
     //   ],picker_cb
     // })
-    const background=new GameObject.GameObjectRect(0,0,DEVICE_WIDTH,DEVICE_HEIGHT,COLORS.BLACK);
-    background.Draw();
+
+    const foreground=new GameObject.GameObjectRect(0,0,DEVICE_WIDTH,DEVICE_HEIGHT,COLORS.BLACK);
+    foreground.Draw();
     const btn=new GameObject.Button(100,100,100,100,"TIME",COLORS.WHITE,COLORS.BLUE,null,()=>{
+      foreground.SetVisible(false);
+      btn.SetVisible(false);
       timePicker.Draw();
     },12);
     btn.Draw();
+
     const timePicker=new RTLY.TimePicker("Start time","",()=>{
-      // timePicker.Delete();
-      background.Draw();
-      // timePicker.Widget.setProperty(hmUI.prop.VISIBLE, false);
+      foreground.Draw();
       btn.Draw();
     });
-    // timePicker.Draw();
-
   }
 });
 function EnableInput(){
