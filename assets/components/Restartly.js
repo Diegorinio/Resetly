@@ -251,6 +251,12 @@ export class Keyboard {
   }
 }
 
+export class TimePicker{
+  constructor(title="time picker",subtitle=""){
+    this.title=title;
+    this.subtitle=subtitle;
+  }
+}
 
 
 

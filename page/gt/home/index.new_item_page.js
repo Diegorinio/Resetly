@@ -9,7 +9,10 @@ import { COLORS } from "../../../assets/components/colors";
 let UIElements=[];
 const itemInfo={"title":"New break","time":0};
 let keyboard=null;
-let timePicker=null;
+const _currenttime=new Time();
+const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
+const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
+const time_picker_info={hour:_currenttime.getHours(),minute:_currenttime.getMinutes()};
 Page({
   onInit() {
     // opcjonalnie ukryj status bar
@@ -93,29 +96,27 @@ Page({
     
 
     //TEsting time picker
-    const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
-    const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
     const picker=hmUI.createWidget(hmUI.widget.WIDGET_PICKER,{
-      "title":"Start time",
+      title:"Start time",
       subtitle:'',
       nb_of_columns:2,
       single_wide:true,
-      init_col_index:1,
+      init_col_index:0,
       data_config:[
         {
         data_array:hours,
-        init_val_index:0,
+        init_val_index:time_picker_info.hour,
         unit:"h",
         support_loop:true,
         font_size:24,
         select_font_size:32,
         connector_font_size:18,
         unit_font_size:18,
-        col_width:80
+        col_width:80 
         },
         {
           data_array:minutes,
-          init_val_index:0,
+          init_val_index:time_picker_info.minute,
           unit:"m",
           support_loop:true,
           font_size:24,
@@ -124,12 +125,26 @@ Page({
           unit_font_size:18,
           col_width:80
         }
-      ]
+      ],picker_cb
     })
- 
   }
 });
 
+function picker_cb(picker,event_type,colum_index,select_index){
+  Logger.log('timePicker event:', event_type,'col:',colum_index,'index:',select_index);
+  if(event_type==1){
+    if(colum_index==0){
+      time_picker_info.hour=hours[select_index];
+    }
+    else if(colum_index==1){
+      time_picker_info.minute=minutes[select_index];
+    }
+    Logger.log("Wybrany czas:",hours[select_index])
+  }
+  if(event_type==2){
+    Logger.log(`H:${time_picker_info.hour} M:${time_picker_info.minute}`);
+  }
+}
 function EnableInput(){
   // keyboard.Show();
   UIElements.forEach(element => {
