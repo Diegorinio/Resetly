@@ -6,6 +6,7 @@ import { Keyboard, TimePicker} from "../../../assets/components/Restartly";
 import { DEVICE_HEIGHT, DEVICE_WIDTH } from "./index.page.s.layout";
 import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
+import * as RTLY from "../../../assets/components/Restartly";
 let UIElements=[];
 const itemInfo={"title":"New break","time":0};
 let keyboard=null;
@@ -96,42 +97,43 @@ Page({
     
 
     //TEsting time picker
-    const picker=hmUI.createWidget(hmUI.widget.WIDGET_PICKER,{
-      title:"Start time",
-      subtitle:'',
-      nb_of_columns:2,
-      single_wide:true,
-      init_col_index:0,
-      data_config:[
-        {
-        data_array:hours,
-        init_val_index:time_picker_info.hour,
-        unit:"h",
-        support_loop:true,
-        font_size:24,
-        select_font_size:32,
-        connector_font_size:18,
-        unit_font_size:18,
-        col_width:80 
-        },
-        {
-          data_array:minutes,
-          init_val_index:time_picker_info.minute,
-          unit:"m",
-          support_loop:true,
-          font_size:24,
-          select_font_size:32,
-          connector_font_size:18,
-          unit_font_size:18,
-          col_width:80
-        }
-      ],picker_cb
-    })
+    // const picker=hmUI.createWidget(hmUI.widget.WIDGET_PICKER,{
+    //   title:"Start time",
+    //   subtitle:'',
+    //   nb_of_columns:2,
+    //   single_wide:true,
+    //   init_col_index:0,
+    //   data_config:[
+    //     {
+    //     data_array:hours,
+    //     init_val_index:time_picker_info.hour,
+    //     unit:"h",
+    //     support_loop:true,
+    //     font_size:24,
+    //     select_font_size:32,
+    //     connector_font_size:18,
+    //     unit_font_size:18,
+    //     col_width:80 
+    //     },
+    //     {
+    //       data_array:minutes,
+    //       init_val_index:time_picker_info.minute,
+    //       unit:"m",
+    //       support_loop:true,
+    //       font_size:24,
+    //       select_font_size:32,
+    //       connector_font_size:18,
+    //       unit_font_size:18,
+    //       col_width:80
+    //     }
+    //   ],picker_cb
+    // })
+    const timePicker=new RTLY.TimePicker("Start time","");
+    timePicker.Draw();
   }
 });
 
 function picker_cb(picker,event_type,colum_index,select_index){
-  Logger.log('timePicker event:', event_type,'col:',colum_index,'index:',select_index);
   if(event_type==1){
     if(colum_index==0){
       time_picker_info.hour=hours[select_index];
@@ -143,6 +145,7 @@ function picker_cb(picker,event_type,colum_index,select_index){
   }
   if(event_type==2){
     Logger.log(`H:${time_picker_info.hour} M:${time_picker_info.minute}`);
+    hmUI.deleteWidget(picker);
   }
 }
 function EnableInput(){

@@ -252,9 +252,70 @@ export class Keyboard {
 }
 
 export class TimePicker{
-  constructor(title="time picker",subtitle=""){
+  constructor(title="time picker",subtitle="",OnConfirm=null){
+    this.Widget=null;
     this.title=title;
     this.subtitle=subtitle;
+    this.time_instance=new Time();
+    this.time_picker_data={hour:this.time_instance.getHours(),minute:this.time_instance.getMinutes()}
+    this.hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
+    this.minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
+    this.data_config=[
+        {
+        data_array:this.hours,
+        init_val_index:this.time_picker_data.hour,
+        unit:"h",
+        support_loop:true,
+        font_size:24,
+        select_font_size:32,
+        connector_font_size:18,
+        unit_font_size:18,
+        col_width:80 
+        },
+        {
+          data_array:this.minutes,
+          init_val_index:this.time_picker_data.minute,
+          unit:"m",
+          support_loop:true,
+          font_size:24,
+          select_font_size:32,
+          connector_font_size:18,
+          unit_font_size:18,
+          col_width:80
+        }
+      ]
+    this.OnPickerChange=this.OnPickerChange;
+    this.OnConfirm=this.Delete;
+  }
+
+  OnPickerChange=(picker,event_type,column_index,select_index)=>{
+    if(event_type==1){
+      if(column_index==0){
+        this.time_picker_data.hour=this.hours[select_index];
+      }
+      else if(column_index==1){
+        this.time_picker_data.minute=this.minutes[select_index];
+      }
+    }
+    if(event_type==2){
+      Logger.log(`H:${this.time_picker_data.hour}, M:${this.time_picker_data.minute}`);
+      this.OnConfirm();
+    }
+  }
+
+  Draw=()=>{
+    this.Widget=hmUI.createWidget(hmUI.widget.WIDGET_PICKER,{
+      title:this.title,
+      subtitle:this.subtitle,
+      nb_of_columns:2,
+      single_wide:true,
+      init_col_index:0,
+      data_config:this.data_config,
+      picker_cb:this.OnPickerChange
+    })
+  }
+  Delete=()=>{
+    hmUI.deleteWidget(this.Widget);
   }
 }
 
