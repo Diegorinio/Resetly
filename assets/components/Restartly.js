@@ -285,7 +285,7 @@ export class TimePicker{
         }
       ]
     this.OnPickerChange=this.OnPickerChange;
-    this.OnConfirm=this.Delete;
+    this.OnConfirm=OnConfirm||(()=>{})
   }
 
   OnPickerChange=(picker,event_type,column_index,select_index)=>{

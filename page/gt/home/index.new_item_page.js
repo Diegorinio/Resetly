@@ -83,18 +83,6 @@ Page({
     //   font_size: 32
     // });
 
-    // hmUI.createWidget(hmUI.widget.BUTTON, {
-    //   x: 20,
-    //   y: 420,
-    //   w: 200,
-    //   h: 60,
-    //   text: "OK",
-    //   click_func: () => {
-    //     const dateObj = pickDate.getProperty(hmUI.prop.MORE, {});
-    //     Logger.log("Wybrana data:", dateObj.year, dateObj.month, dateObj.day);
-    //   }
-    // });
-    
 
     //TEsting time picker
     // const picker=hmUI.createWidget(hmUI.widget.WIDGET_PICKER,{
@@ -128,26 +116,22 @@ Page({
     //     }
     //   ],picker_cb
     // })
-    const timePicker=new RTLY.TimePicker("Start time","");
-    timePicker.Draw();
+    const background=new GameObject.GameObjectRect(0,0,DEVICE_WIDTH,DEVICE_HEIGHT,COLORS.BLACK);
+    background.Draw();
+    const btn=new GameObject.Button(100,100,100,100,"TIME",COLORS.WHITE,COLORS.BLUE,null,()=>{
+      timePicker.Draw();
+    },12);
+    btn.Draw();
+    const timePicker=new RTLY.TimePicker("Start time","",()=>{
+      // timePicker.Delete();
+      background.Draw();
+      // timePicker.Widget.setProperty(hmUI.prop.VISIBLE, false);
+      btn.Draw();
+    });
+    // timePicker.Draw();
+
   }
 });
-
-function picker_cb(picker,event_type,colum_index,select_index){
-  if(event_type==1){
-    if(colum_index==0){
-      time_picker_info.hour=hours[select_index];
-    }
-    else if(colum_index==1){
-      time_picker_info.minute=minutes[select_index];
-    }
-    Logger.log("Wybrany czas:",hours[select_index])
-  }
-  if(event_type==2){
-    Logger.log(`H:${time_picker_info.hour} M:${time_picker_info.minute}`);
-    hmUI.deleteWidget(picker);
-  }
-}
 function EnableInput(){
   // keyboard.Show();
   UIElements.forEach(element => {
