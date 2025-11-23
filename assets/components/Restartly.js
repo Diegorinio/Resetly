@@ -258,12 +258,12 @@ export class TimePicker{
     this.subtitle=subtitle;
     this.time_instance=new Time();
     this.time_picker_data=picker_data||{hour:this.time_instance.getHours(),minute:this.time_instance.getMinutes(),seconds:this.time_instance.getSeconds()}
-    this.hours = Array.from({length:this.time_picker_data.hour}, (_,i) => i.toString().padStart(2,'0'));
-    this.minutes = Array.from({length:this.time_picker_data.minute}, (_,i) => i.toString().padStart(2,'0'));
+    this.hours = Array.from({length:this.time_picker_data.hour+1}, (_,i) => i.toString().padStart(2,'0'));
+    this.minutes = Array.from({length:this.time_picker_data.minute+1}, (_,i) => i.toString().padStart(2,'0'));
     this.data_config=[
         {
         data_array:this.hours,
-        init_val_index:this.time_picker_data.hour-1,
+        init_val_index:this.time_picker_data.hour,
         unit:"h",
         support_loop:false,
         font_size:24,
@@ -274,7 +274,7 @@ export class TimePicker{
         },
         {
           data_array:this.minutes,
-          init_val_index:this.time_picker_data.minute-1,
+          init_val_index:this.time_picker_data.minute,
           unit:"m",
           support_loop:false,
           font_size:24,
