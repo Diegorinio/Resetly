@@ -23,9 +23,11 @@ Page({
       Logger.log(itemParams.date_picker.day);
       itemInfo.title=itemParams.title;
       itemInfo.time=itemParams.time;
-      itemInfo.time_picker.hour=itemParams.time_picker.hour;
-      itemInfo.time_picker.minute=itemParams.time_picker.minute;
-      itemInfo.time_picker.seconds=itemParams.time_picker.seconds;
+      itemInfo.time_picker=itemParams.time_picker;
+      // itemInfo.time_picker.hour=itemParams.time_picker.hour;
+      // itemInfo.time_picker.minute=itemParams.time_picker.minute;
+      // itemInfo.time_picker.seconds=itemParams.time_picker.seconds;
+      itemInfo.date_picker=itemParams.date_picker;
     }
     // opcjonalnie ukryj status bar
     hmUI.setStatusBarVisible(false);

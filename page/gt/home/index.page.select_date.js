@@ -20,6 +20,8 @@ Page({
         itemInfo.time=_item.time;
         itemInfo.date=_item.date;
         itemInfo.time_picker=_item.time_picker;
+        Logger.log("Date picker: "+JSON.stringify(_item.date_picker));
+        itemInfo.date_picker=_item.date_picker;
     }
     hmUI.setStatusBarVisible(false);
   },
@@ -38,10 +40,11 @@ Page({
     const btn=new GameObject.Button(0,DEVICE_HEIGHT-50,DEVICE_WIDTH,50,"CONFIRM",COLORS.WHITE,COLORS.BLUE,null,()=>{
         const dateObj=datePicker.getProperty(hmUI.MORE,{});
         const {year,month,day}=dateObj;
-        Logger.log(year);
-        Logger.log(month);
-        Logger.log(day);
-        datePicker.setProperty(hmUI.widget.VISIBLE,false);
+        itemInfo.date_picker.year=year;
+        itemInfo.date_picker.month=month;
+        itemInfo.date_picker.day=day;
+        Logger.log("New date picker: "+JSON.stringify(itemInfo.date_picker));
+        hmRoute.push({url:'/page/gt/home/index.new_item_page',params:JSON.stringify(itemInfo)})
     },12);
     btn.Draw();
   }
