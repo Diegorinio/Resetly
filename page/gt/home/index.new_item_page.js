@@ -58,9 +58,6 @@ Page({
     keyboard.Hide();
     let titleFragment=[TitleText,backgroundRect,TitleInputText,InputEnableButton]
 
-
-    //Date picker fragment
-
     //Time picker fragment
     const _timePickerBackgroundRect=new GameObject.GameObjectRect(0,backgroundRect.y+backgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     _timePickerBackgroundRect.Draw();
@@ -71,10 +68,22 @@ Page({
     let timePickerFragment=[_timePickerBackgroundRect,_timePickerInputText,TimePickerEnableButton];
 
 
+    //Date picker fragment
+    const _datePickerBackgroundRect=new GameObject.GameObjectRect(0,_timePickerBackgroundRect.y+_timePickerBackgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
+    _datePickerBackgroundRect.Draw();
+
+    const _datePickerInputText=new GameObject.Text(10,_datePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.date_picker.day}/${itemInfo.date_picker.month}/${itemInfo.date_picker.year}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    _datePickerInputText.Draw();
+
+    const DatePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_datePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToTimePicker,16,null,32);
+    DatePickerEnableButton.Draw();
+
+    let datePickerFragment=[_datePickerBackgroundRect,_datePickerInputText,DatePickerEnableButton];
 
 
     UIElements.push(...titleFragment);
     UIElements.push(...timePickerFragment);
+    UIElements.push(...datePickerFragment);
   }
 });
 function EnableInput(){
