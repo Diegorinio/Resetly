@@ -9,7 +9,7 @@ import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 let UIElements=[];
 const time=new Time();
-const itemInfo={"title":"item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo={"title":"item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
 let keyboard=null;
 const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
 const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
@@ -22,6 +22,7 @@ Page({
       itemInfo.time=itemParams.time;
       itemInfo.time_picker.hour=itemParams.time_picker.hour;
       itemInfo.time_picker.minute=itemParams.time_picker.minute;
+      itemInfo.time_picker.seconds=itemParams.time_picker.seconds;
     }
     // opcjonalnie ukryj status bar
     hmUI.setStatusBarVisible(false);
@@ -94,7 +95,7 @@ function GoToTimePicker(){
 
 function AddNewItem(){
   Logger.log(JSON.stringify(itemInfo.date_picker));
-  const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,0);
+  const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
   const _itemTime=_itemDate.getTime();
   const _itemData={title:itemInfo.title,time:_itemTime}
   hmRoute.push({url:'/page/gt/home/index.page',params:JSON.stringify(_itemData)});
