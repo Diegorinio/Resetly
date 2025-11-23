@@ -14,15 +14,20 @@ let keyboard=null;
 const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
 const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
 Page({
+  style:{
+    titleBar:false
+  },
   onInit(params) {
     if(params!=null && params!=""&&params!=null){
       const itemParams=JSON.parse(params);
       Logger.log(itemParams.date_picker.day);
       itemInfo.title=itemParams.title;
       itemInfo.time=itemParams.time;
-      itemInfo.time_picker.hour=itemParams.time_picker.hour;
-      itemInfo.time_picker.minute=itemParams.time_picker.minute;
-      itemInfo.time_picker.seconds=itemParams.time_picker.seconds;
+      itemInfo.time_picker=itemParams.time_picker;
+      // itemInfo.time_picker.hour=itemParams.time_picker.hour;
+      // itemInfo.time_picker.minute=itemParams.time_picker.minute;
+      // itemInfo.time_picker.seconds=itemParams.time_picker.seconds;
+      itemInfo.date_picker=itemParams.date_picker;
     }
     // opcjonalnie ukryj status bar
     hmUI.setStatusBarVisible(false);
@@ -56,16 +61,33 @@ Page({
       }
     });
     keyboard.Hide();
-    let titleFragment=[TitleText,backgroundRect,TitleInputText,InputEnableButton]
+    
+    const titleFragment=[TitleText,backgroundRect,TitleInputText,InputEnableButton]
 
     //Time picker fragment
     const _timePickerBackgroundRect=new GameObject.GameObjectRect(0,backgroundRect.y+backgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     _timePickerBackgroundRect.Draw();
+
     const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.time_picker.hour}:${itemInfo.time_picker.minute}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     _timePickerInputText.Draw();
+
     const TimePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_timePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToTimePicker,16,null,32);
     TimePickerEnableButton.Draw();
-    let timePickerFragment=[_timePickerBackgroundRect,_timePickerInputText,TimePickerEnableButton];
+
+    const timePickerFragment=[_timePickerBackgroundRect,_timePickerInputText,TimePickerEnableButton];
+
+    //Date picker fragment
+    // const _datePickerBackgroundRect=new GameObject.GameObjectRect(0,_timePickerBackgroundRect.y+_timePickerBackgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
+    // _datePickerBackgroundRect.Draw();
+
+    // const _datePickerInputText=new GameObject.Text(10,_datePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.date_picker.day}/${itemInfo.date_picker.month}/${itemInfo.date_picker.year}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
+    // _datePickerInputText.Draw();
+
+    // const DatePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_datePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToDatePicker,16,null,32);
+    // DatePickerEnableButton.Draw();
+
+    // const datePickerFragment=[_datePickerBackgroundRect,_datePickerInputText,DatePickerEnableButton];
+
 
     const AddNewElementButton=new GameObject.Button(0,DEVICE_HEIGHT-100,DEVICE_WIDTH,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddNewItem,32);
     AddNewElementButton.Draw();
@@ -91,6 +113,10 @@ function DisableInput(){
 
 function GoToTimePicker(){
   hmRoute.push({url:'/page/gt/home/index.page.select_time',params:JSON.stringify(itemInfo)});
+}
+
+function GoToDatePicker(){
+  hmRoute.push({url:'/page/gt/home/index.page.select_date',params:JSON.stringify(itemInfo)});
 }
 
 function AddNewItem(){
