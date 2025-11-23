@@ -2,10 +2,14 @@ import * as hmUI from "@zos/ui";
 import {Time} from "@zos/sensor";
 import { log, log as Logger } from "@zos/utils";
 import * as hmRoute from "@zos/router";
+import { Keyboard, TimePicker} from "../../../assets/components/Restartly";
+import { DEVICE_HEIGHT, DEVICE_WIDTH } from "./index.page.s.layout";
+import * as GameObject from "../../../assets/components/Classes";
+import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 const time=new Time();
 const time_picker_data={hour:time.getHours(),minute:time.getMinutes()};
-const itemInfo={"title":"New break","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDay(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo={"title":"item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
 Page({
   onInit(params) {
     if(params!=null&& params!=""){
@@ -24,7 +28,7 @@ Page({
         itemInfo.time_picker.hour=data.hour;
         itemInfo.time_picker.minute=data.minute;
         hmRoute.push({url:'/page/gt/home/index.new_item_page',params:JSON.stringify(itemInfo)})
-    },itemInfo.time_picker);
+    });
     timePicker.Draw();
   }
 });
