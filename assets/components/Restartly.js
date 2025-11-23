@@ -252,12 +252,12 @@ export class Keyboard {
 }
 
 export class TimePicker{
-  constructor(title="time picker",subtitle="",OnConfirm=null){
+  constructor(title="time picker",subtitle="",OnConfirm=null,picker_data=null){
     this.Widget=null;
     this.title=title;
     this.subtitle=subtitle;
     this.time_instance=new Time();
-    this.time_picker_data={hour:this.time_instance.getHours(),minute:this.time_instance.getMinutes()}
+    this.time_picker_data=picker_data||{hour:this.time_instance.getHours(),minute:this.time_instance.getMinutes()}
     this.hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
     this.minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
     this.data_config=[

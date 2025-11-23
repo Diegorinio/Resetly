@@ -28,7 +28,7 @@ Page({
         itemInfo.time_picker.hour=data.hour;
         itemInfo.time_picker.minute=data.minute;
         hmRoute.push({url:'/page/gt/home/index.new_item_page',params:JSON.stringify(itemInfo)})
-    });
+    },itemInfo.time_picker);
     timePicker.Draw();
   }
 });

@@ -17,9 +17,12 @@ const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
 Page({
   onInit(params) {
     if(params!=null && params!=""&&params!=null){
-      Logger.log(params);
       const itemParams=JSON.parse(params);
       Logger.log(itemParams.title);
+      itemInfo.title=itemParams.title;
+      itemInfo.time=itemParams.time;
+      itemInfo.time_picker.hour=itemParams.time_picker.hour;
+      itemInfo.time_picker.minute=itemParams.time_picker.minute;
     }
     // opcjonalnie ukryj status bar
     hmUI.setStatusBarVisible(false);
@@ -30,11 +33,12 @@ Page({
     TitleText.Draw();
     const backgroundRect=new GameObject.GameObjectRect(0,120,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     backgroundRect.Draw();
-    const TitleInputText=new GameObject.Text(10,120,DEVICE_WIDTH-100,80,42,"Title",COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    const TitleInputText=new GameObject.Text(10,120,DEVICE_WIDTH-100,80,42,itemInfo.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     TitleInputText.Draw();
 
     const InputEnableButton=new GameObject.Button(DEVICE_WIDTH-110,TitleInputText.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,EnableInput,16,null,32);
     InputEnableButton.Draw();
+
     keyboard=new Keyboard({
       x: 0,
       y: 100,
@@ -60,7 +64,7 @@ Page({
     //Time picker fragment
     const _timePickerBackgroundRect=new GameObject.GameObjectRect(0,backgroundRect.y+backgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     _timePickerBackgroundRect.Draw();
-    const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,"HH:MM",COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.time_picker.hour}:${itemInfo.time_picker.minute}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     _timePickerInputText.Draw();
     const TimePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_timePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToTimePicker,16,null,32);
     TimePickerEnableButton.Draw();
