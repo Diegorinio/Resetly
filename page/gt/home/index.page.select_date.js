@@ -8,31 +8,41 @@ import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 const time=new Time();
-const time_picker_data={hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()};
 const itemInfo={"title":"item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
 Page({
     style:{
     titleBar:false
   },
   onInit(params) {
-    if(params!=null&& params!=""){
+    if(params!=null&& params!=""&&params!==undefined){
         const _item=JSON.parse(params);
         itemInfo.title=_item.title;
         itemInfo.time=_item.time;
         itemInfo.date=_item.date;
         itemInfo.time_picker=_item.time_picker;
-        Logger.log(itemInfo.time_picker.hour);
     }
     hmUI.setStatusBarVisible(false);
   },
   build() {
-    const timePicker=new RTLY.TimePicker("Start time","",()=>{
-        const data=timePicker.time_picker_data;
-        itemInfo.time_picker.hour=data.hour;
-        itemInfo.time_picker.minute=data.minute;
-        itemInfo.time_picker.seconds=data.seconds
-        hmRoute.push({url:'/page/gt/home/index.new_item_page',params:JSON.stringify(itemInfo)})
-    });
-    timePicker.Draw();
+    const datePicker=hmUI.createWidget(hmUI.widget.PICK_DATE);
+    datePicker.setProperty(hmUI.prop.MORE,{
+        w: 480,
+      x: 20,
+      y: 120,
+      startYear: itemInfo.date_picker.year,
+      endYear: itemInfo.date_picker.year,
+      initYear: itemInfo.date_picker.year,
+      initMonth: itemInfo.date_picker.month,
+      initDay: itemInfo.date_picker.day,
+    })
+    const btn=new GameObject.Button(0,DEVICE_HEIGHT-50,DEVICE_WIDTH,50,"CONFIRM",COLORS.WHITE,COLORS.BLUE,null,()=>{
+        const dateObj=datePicker.getProperty(hmUI.MORE,{});
+        const {year,month,day}=dateObj;
+        Logger.log(year);
+        Logger.log(month);
+        Logger.log(day);
+        datePicker.setProperty(hmUI.widget.VISIBLE,false);
+    },12);
+    btn.Draw();
   }
 });

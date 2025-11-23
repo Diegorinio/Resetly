@@ -29,7 +29,7 @@ Page({
     logger.debug("page onInit invoked");
   },
   build() {
-    // hmRoute.push({url:"/page/gt/home/index.new_item_page"});
+    // hmRoute.push({url:"/page/gt/home/index.page.select_date"});
     LOGO.Draw();
     logger.debug("page build invoked");
     // const itttem=new RTLY.Item(0,"Test",523100);
