@@ -263,7 +263,7 @@ export class TimePicker{
     this.data_config=[
         {
         data_array:this.hours,
-        init_val_index:this.time_picker_data.hour,
+        init_val_index:this.time_picker_data.hour-1,
         unit:"h",
         support_loop:false,
         font_size:24,
@@ -274,7 +274,7 @@ export class TimePicker{
         },
         {
           data_array:this.minutes,
-          init_val_index:this.time_picker_data.minute,
+          init_val_index:this.time_picker_data.minute-1,
           unit:"m",
           support_loop:false,
           font_size:24,
