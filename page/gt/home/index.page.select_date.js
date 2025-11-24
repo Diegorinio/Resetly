@@ -8,7 +8,8 @@ import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 const time=new Time();
-const itemInfo={"title":"item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+// const itemInfo={"title":"Item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo=null;
 Page({
     style:{
     titleBar:false
@@ -22,6 +23,9 @@ Page({
         itemInfo.time_picker=_item.time_picker;
         Logger.log("Date picker: "+JSON.stringify(_item.date_picker));
         itemInfo.date_picker=_item.date_picker;
+    }
+    if(itemInfo==null){
+      hmRoute.push({url:'/page/gt/home/index.new_item_page'})
     }
     hmUI.setStatusBarVisible(false);
   },

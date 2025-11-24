@@ -6,12 +6,15 @@ import * as GameObject from "../../../assets/components/Classes";
 import {COLORS} from "../../../assets/components/colors";
 import { GameLoop } from "../../../assets/components/GameLoop";
 import { DEVICE_WIDTH,DEVICE_HEIGHT } from "./index.page.r.layout";
+import { getText } from "@zos/i18n";
 import * as RTLY from "../../../assets/components/Restartly";
+
 const GlobalLoop=GameLoop.getInstance();
 GlobalLoop.SetTick(1000);
 const logger = Logger.getLogger("helloworld");
-const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,50,32,"Restartly",COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
-const newItemButton=new GameObject.Button(0,DEVICE_HEIGHT-105,DEVICE_WIDTH,100,"ADD NEW ITEM",COLORS.WHITE,COLORS.DARK_BLUE,null,CreateNewItem,60);
+const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,50,32,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
+
+const newItemButton=new GameObject.Button(100,DEVICE_HEIGHT-105,DEVICE_WIDTH/2,100,"+",COLORS.WHITE,COLORS.BLUE,null,CreateNewItem,42,null,48);
 const ItemContainer=new GameObject.ViewContainer(0,LOGO.y+LOGO.height,DEVICE_WIDTH,(DEVICE_HEIGHT-LOGO.height),[],true,-1);
 let itemElements=[];
 let items=[];

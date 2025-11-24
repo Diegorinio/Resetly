@@ -7,9 +7,10 @@ import { DEVICE_HEIGHT, DEVICE_WIDTH } from "./index.page.s.layout";
 import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
+import { getText } from "@zos/i18n";
 let UIElements=[];
 const time=new Time();
-const itemInfo={"title":"item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
 let keyboard=null;
 const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
 const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
@@ -34,7 +35,7 @@ Page({
   },
   build() {
     //Title fragment
-    const TitleText=new GameObject.Text(0,50,DEVICE_WIDTH,50,32,"I'm taking break from",COLORS.RED);
+    const TitleText=new GameObject.Text(0,50,DEVICE_WIDTH,50,32,getText('newItemPageText'),COLORS.RED);
     TitleText.Draw();
     const backgroundRect=new GameObject.GameObjectRect(0,120,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     backgroundRect.Draw();

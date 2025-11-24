@@ -9,7 +9,7 @@ import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 const time=new Time();
 const time_picker_data={hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()};
-const itemInfo={"title":"item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo={"title":"Item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
 Page({
     style:{
     titleBar:false
