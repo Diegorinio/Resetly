@@ -20,7 +20,7 @@ Page({
     titleBar:false
   },
   onInit(params) {
-    if(params!=null && params!=""&&params!=null){
+    if(params!=null && params!=""){
       const itemParams=JSON.parse(params);
       Logger.log(itemParams.date_picker.day);
       itemInfo.title=itemParams.title;

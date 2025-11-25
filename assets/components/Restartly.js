@@ -41,7 +41,8 @@ export class ItemElement extends GameObject{
       this.titleLabel=new Text(left-50,this.y,left,this.height,this.height/4,item.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
 
       this.timerText=new Text(this.titleLabel.x+this.titleLabel.width,this.y,middle,this.height/2,this.height/5,"Absence time",COLORS.WHITE);
-      this.timerLabel=new Text(this.titleLabel.x+this.titleLabel.width,this.timerText.y+this.timerText.height/4,middle,this.height,this.height/4,item.time,COLORS.WHITE,null);
+
+      this.timerLabel=new Text(this.titleLabel.x+this.titleLabel.width,this.timerText.y+this.timerText.height/4,middle,this.height,this.height/4,"",COLORS.WHITE,null);
 
       this.startButton=new Button(this.x+this.width-100,this.y+5,100,this.height-10,"EDIT",COLORS.RED,COLORS.BLACK,null,this.ToggleTimer,12,null,this.height/4);
       this.Widgets.push(this.titleLabel,this.timerText,this.timerLabel,this.startButton);
@@ -163,9 +164,9 @@ export class Keyboard {
         let w = keyWidth;
 
         // Szerokości specjalnych przycisków
-        if (key === "close") w = SCREEN_W * 0.15;
-        if (key === "space") w = SCREEN_W * 0.60;
-        if (key === "enter") w = SCREEN_W * 0.25;
+        if (key === "close") w = SCREEN_W * 0.20;
+        if (key === "space") w = SCREEN_W * 0.50;
+        if (key === "enter") w = SCREEN_W * 0.30;
 
         // Ikony
         const label = key === "space" ? "␣" :
@@ -178,9 +179,9 @@ export class Keyboard {
           x: xOffset,
           y: yOffset,
           w: w,
-          h: 40,
+          h: 50,
           text: label,
-          text_size: 20,
+          text_size: 30,
           click_func: () => this._onKeyPress(key)
         });
 
