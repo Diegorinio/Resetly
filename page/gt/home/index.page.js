@@ -14,13 +14,13 @@ GlobalLoop.SetTick(1000);
 const logger = Logger.getLogger("helloworld");
 const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,50,32,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
 
-const newItemButton=new GameObject.Button(100,DEVICE_HEIGHT-105,DEVICE_WIDTH/2,100,"+",COLORS.WHITE,COLORS.BLUE,null,CreateNewItem,42,null,48);
+const newItemButton=new GameObject.Button(0,DEVICE_HEIGHT-105,DEVICE_WIDTH,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,130,null,99);
 
-const ItemContainer=new GameObject.ViewContainer(0,LOGO.y+LOGO.height,DEVICE_WIDTH,(DEVICE_HEIGHT-LOGO.height),[],true,-1);
+const ItemContainer=new GameObject.ViewContainer(0,LOGO.y+LOGO.height,DEVICE_WIDTH,(DEVICE_HEIGHT-LOGO.height-newItemButton.height),[],true,-1);
 const loadedStorage=RTLY.LoadItemsStorage();
 // logger.log(loadedStorage.items)
 let itemElements=[];
-let items=[...loadedStorage.items];
+let items=[...loadedStorage.items.reverse()];
 Page({
   style:{
     titleBar:false
@@ -42,7 +42,7 @@ Page({
       itemElements.push(_element);
       ItemContainer.AddWidget(_element);
       ItemContainer.InitializeWidgets();
-      posY+=100;
+      posY+=101;
     })
     // const itemElement=new RTLY.ItemElement(0,0,DEVICE_WIDTH,100,itttem);
     // itemElements.push(itemElement);
