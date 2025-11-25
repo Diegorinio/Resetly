@@ -8,6 +8,7 @@ import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 import { getText } from "@zos/i18n";
+import { LocalStorage } from '@zos/storage'
 let UIElements=[];
 const time=new Time();
 const itemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
@@ -125,5 +126,6 @@ function AddNewItem(){
   const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
   const _itemTime=_itemDate.getTime();
   const _itemData={title:itemInfo.title,time:_itemTime}
-  hmRoute.push({url:'/page/gt/home/index.page',params:JSON.stringify(_itemData)});
+  RTLY.AddItemToStorage(_itemData);
+  hmRoute.push({url:'/page/gt/home/index.page'});
 }

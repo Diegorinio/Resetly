@@ -4,6 +4,7 @@ import { COLORS } from "./colors";
 import * as hmUI from "@zos/ui";
 import {Time} from "@zos/sensor";
 import { log, log as Logger } from "@zos/utils";
+import { localStorage } from "@zos/storage";
 export class ItemElement extends GameObject{
   constructor(x,y,width,height,item=null){
     super(x,y,width,height);
@@ -322,8 +323,29 @@ export class TimePicker{
 export function SaveGame(data){
 
 }
-export function LoadGame(){
-  
+export function LoadItemsStorage(){
+  let storage=localStorage.getItem('items_list');
+  if(storage==null){
+    storage={items:[]}
+    localStorage.setItem('items_list',storage);
+  }
+  return storage;
+}
+
+export function AddItemToStorage(item){
+  const storage=localStorage.getItem('items_list')
+  Logger.log(JSON.stringify(storage.items));
+  const newItem={id:storage['items'].length,title:item.title,time:item.time};
+  storage.items.push(newItem);
+  localStorage.setItem('items_list', storage)
+}
+
+export function RemoveItemFromStorage(item){
+  localStorage.clear();
+}
+
+export function ClearStorage(){
+  localStorage.clear();
 }
 
 
