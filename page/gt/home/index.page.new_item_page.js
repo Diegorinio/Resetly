@@ -23,7 +23,7 @@ Page({
     // RTLY.ClearStorage();
     if(params!=null && params!=""){
       const itemParams=JSON.parse(params);
-      Logger.log(itemParams.date_picker.day);
+      Logger.log(JSON.stringify(itemParams.date_picker));
       itemInfo.title=itemParams.title;
       itemInfo.time=itemParams.time;
       itemInfo.time_picker=itemParams.time_picker;
@@ -79,17 +79,17 @@ Page({
 
     const timePickerFragment=[_timePickerBackgroundRect,_timePickerInputText,TimePickerEnableButton];
 
-    //Date picker fragment
-    // const _datePickerBackgroundRect=new GameObject.GameObjectRect(0,_timePickerBackgroundRect.y+_timePickerBackgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
-    // _datePickerBackgroundRect.Draw();
+    // Date picker fragment
+    const _datePickerBackgroundRect=new GameObject.GameObjectRect(0,_timePickerBackgroundRect.y+_timePickerBackgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
+    _datePickerBackgroundRect.Draw();
 
-    // const _datePickerInputText=new GameObject.Text(10,_datePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.date_picker.day}/${itemInfo.date_picker.month}/${itemInfo.date_picker.year}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
-    // _datePickerInputText.Draw();
+    const _datePickerInputText=new GameObject.Text(10,_datePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.date_picker.day}/${itemInfo.date_picker.month}/${itemInfo.date_picker.year}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
+    _datePickerInputText.Draw();
 
-    // const DatePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_datePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToDatePicker,16,null,32);
-    // DatePickerEnableButton.Draw();
+    const DatePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_datePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToDatePicker,16,null,32);
+    DatePickerEnableButton.Draw();
 
-    // const datePickerFragment=[_datePickerBackgroundRect,_datePickerInputText,DatePickerEnableButton];
+    const datePickerFragment=[_datePickerBackgroundRect,_datePickerInputText,DatePickerEnableButton];
 
     const BackButton=new GameObject.Button(0,DEVICE_HEIGHT-100,80,100,"<",COLORS.RED,COLORS.AMBER,null,()=>{
       hmRoute.push({url:'/page/gt/home/index.page'})
@@ -101,7 +101,7 @@ Page({
     UIElements.push(AddNewElementButton);
     UIElements.push(...titleFragment);
     UIElements.push(...timePickerFragment);
-    // UIElements.push(...datePickerFragment);
+    UIElements.push(...datePickerFragment);
   }
 });
 function EnableInput(){

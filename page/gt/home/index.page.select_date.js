@@ -8,8 +8,7 @@ import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 const time=new Time();
-// const itemInfo={"title":"Item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
-const itemInfo=null;
+const itemInfo={item:null};
 Page({
     style:{
     titleBar:false
@@ -17,12 +16,15 @@ Page({
   onInit(params) {
     if(params!=null&& params!=""&&params!==undefined){
         const _item=JSON.parse(params);
-        itemInfo.title=_item.title;
-        itemInfo.time=_item.time;
-        itemInfo.date=_item.date;
-        itemInfo.time_picker=_item.time_picker;
-        Logger.log("Date picker: "+JSON.stringify(_item.date_picker));
-        itemInfo.date_picker=_item.date_picker;
+        itemInfo.item=_item;
+        Logger.log(JSON.stringify(itemInfo.item));
+        // Logger.log(JSON.stringify(_item));
+        // itemInfo.title=_item.title;
+        // itemInfo.time=_item.time;
+        // itemInfo.date=_item.date;
+        // itemInfo.time_picker=_item.time_picker;
+        // Logger.log("Date picker: "+JSON.stringify(_item.date_picker));
+        // itemInfo.date_picker=_item.date_picker;
     }
     if(itemInfo==null){
       hmRoute.push({url:'/page/gt/home/index.page.new_item_page'})
@@ -35,20 +37,19 @@ Page({
         w: 480,
       x: 20,
       y: 120,
-      startYear: itemInfo.date_picker.year,
-      endYear: itemInfo.date_picker.year,
-      initYear: itemInfo.date_picker.year,
-      initMonth: itemInfo.date_picker.month,
-      initDay: itemInfo.date_picker.day,
+      startYear: itemInfo.item.date_picker.year,
+      endYear: itemInfo.item.date_picker.year,
+      initYear: itemInfo.item.date_picker.year,
+      initMonth: itemInfo.item.date_picker.month,
+      initDay: itemInfo.item.date_picker.day,
     })
     const btn=new GameObject.Button(0,DEVICE_HEIGHT-50,DEVICE_WIDTH,50,"CONFIRM",COLORS.WHITE,COLORS.BLUE,null,()=>{
         const dateObj=datePicker.getProperty(hmUI.MORE,{});
         const {year,month,day}=dateObj;
-        itemInfo.date_picker.year=year;
-        itemInfo.date_picker.month=month;
-        itemInfo.date_picker.day=day;
-        Logger.log("New date picker: "+JSON.stringify(itemInfo.date_picker));
-        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo)})
+        itemInfo.item.date_picker.year=year;
+        itemInfo.item.date_picker.month=month;
+        itemInfo.item.date_picker.day=day;
+        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo.item)})
     },12);
     btn.Draw();
   }
