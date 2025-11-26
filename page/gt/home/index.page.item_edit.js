@@ -9,6 +9,7 @@ import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 import { getText } from "@zos/i18n";
 import { LocalStorage } from '@zos/storage'
+import { createModal, MODAL_CONFIRM } from "@zos/interaction";
 let UIElements=[];
 const time=new Time();
 const item={id:0,title:"",time:0}
@@ -37,8 +38,20 @@ Page({
     })
 
     const DeleteBtn=new GameObject.Button(0,RestartBtn.y+RestartBtn.height,100,80,"DELETE",COLORS.WHITE,COLORS.RED,null,()=>{
-        RTLY.RemoveItemFromStorage(item);
-        GoBack();
+      const dialog=createModal({
+        content:"Delete "+item.title,
+        autoHide:false,
+        onClick:(keyObj)=>{
+          const {type}=keyObj
+          if(type==MODAL_CONFIRM){
+            RTLY.RemoveItemFromStorage(item);
+            GoBack();
+          }
+          else{
+            dialog.show(false);
+          }
+        }
+      })
     })
     RestartBtn.Draw();
     DeleteBtn.Draw();
