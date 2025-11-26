@@ -82,7 +82,7 @@ function CreateNewItem(){
 function GoToEditItemPage(id){
   logger.log("Presed ",id);
   const _item=items.find(i => i.id==id);
-  logger.log(JSON.stringify(_item))
-
+  // logger.log(JSON.stringify(_item))
+  hmRoute.push({url:"/page/gt/home/index.page.item_edit",params:JSON.stringify(_item)});
 }
 

@@ -342,6 +342,20 @@ export function AddItemToStorage(item){
     Logger.log(JSON.stringify(newItem));
   localStorage.setItem('items_list', storage)
 }
+export function GetItemFromStorage(item){
+  let storage=LoadItemsStorage();
+  const _item=storage.items[item.id];
+  return _item;
+}
+export function OverwriteItemInStorage(item){
+  const _item=GetItemFromStorage(item);
+  _item.id=item.id;
+  _item.title=item.title;
+  _item.time=item.time;
+  const storage=LoadItemsStorage();
+  storage.items[item.id]=_item;
+  localStorage.setItem('items_list',storage);
+}
 
 export function RemoveItemFromStorage(item){
   localStorage.removeItem(item);
@@ -350,7 +364,6 @@ export function RemoveItemFromStorage(item){
 export function ClearStorage(){
   localStorage.clear();
 }
-
 
 
 
