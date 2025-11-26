@@ -35,9 +35,9 @@ Page({
         item.time=time.getTime();
         RTLY.OverwriteItemInStorage(item);
         GoBack();
-    })
+    },12,null,62)
 
-    const DeleteBtn=new GameObject.Button(0,RestartBtn.y+RestartBtn.height,100,80,"DELETE",COLORS.WHITE,COLORS.RED,null,()=>{
+    const DeleteBtn=new GameObject.Button(DEVICE_WIDTH/2-50,RestartBtn.y+RestartBtn.height+100,100,80,"DELETE",COLORS.WHITE,COLORS.RED,null,()=>{
       const dialog=createModal({
         content:"Delete "+item.title,
         autoHide:false,

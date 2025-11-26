@@ -47,7 +47,7 @@ Page({
         }
         else{
           showToast({
-            content:"Cannot set date in future"
+            content:"Cannot travel to the future"
           })
         }
     },12);
