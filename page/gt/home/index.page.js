@@ -14,13 +14,16 @@ GlobalLoop.SetTick(1000);
 const logger = Logger.getLogger("helloworld");
 const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,50,32,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
 
-const newItemButton=new GameObject.Button(0,DEVICE_HEIGHT-105,DEVICE_WIDTH,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,130,null,99);
+const newItemButton=new GameObject.Button(0,DEVICE_HEIGHT-105,DEVICE_WIDTH,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,60,null,99);
 
 const ItemContainer=new GameObject.ViewContainer(0,LOGO.y+LOGO.height,DEVICE_WIDTH,(DEVICE_HEIGHT-LOGO.height-newItemButton.height),[],true,-1);
 const loadedStorage=RTLY.LoadItemsStorage();
-// logger.log(loadedStorage.items)
+logger.log(JSON.stringify(loadedStorage));
 let itemElements=[];
-let items=[...loadedStorage.items.reverse()];
+let items=[...loadedStorage.items].reverse();
+items.forEach(el=>{
+  logger.log(el.id);
+})
 Page({
   style:{
     titleBar:false
@@ -34,15 +37,18 @@ Page({
     LOGO.Draw();
     logger.debug("page build invoked");
     // const itttem=new RTLY.Item(0,"Test",523100);
-    let posY=100;
+    let posY=130;
+    const spacing=133;
     items.forEach(item=>{
       logger.log(item.title);
-      const _element = new RTLY.ItemElement(0,posY,DEVICE_WIDTH,100,item);
+      const _element = new RTLY.ItemElement(0,posY,DEVICE_WIDTH,130,item,()=>{
+        GoToEditItemPage(item.id);
+      });
       _element.Active=true;
       itemElements.push(_element);
       ItemContainer.AddWidget(_element);
       ItemContainer.InitializeWidgets();
-      posY+=101;
+      posY+=spacing;
     })
     // const itemElement=new RTLY.ItemElement(0,0,DEVICE_WIDTH,100,itttem);
     // itemElements.push(itemElement);
@@ -70,6 +76,13 @@ function CreateNewItem(){
   // itemElements.push(new_itemElement)
   // ItemContainer.AddWidget(new_itemElement);
   // ItemContainer.InitializeWidgets();
-  hmRoute.push({url:"/page/gt/home/index.new_item_page"});
+  hmRoute.push({url:"/page/gt/home/index.page.new_item_page"});
+}
+
+function GoToEditItemPage(id){
+  logger.log("Presed ",id);
+  const _item=items.find(i => i.id==id);
+  logger.log(JSON.stringify(_item))
+
 }
 

@@ -30,7 +30,7 @@
         "page": {
           "pages": [
             "page/gt/home/index.page",
-            "page/gt/home/index.new_item_page",
+            "page/gt/home/index.page.new_item_page",
             "page/gt/home/index.page.select_time",
             "page/gt/home/index.page.select_date"
           ]

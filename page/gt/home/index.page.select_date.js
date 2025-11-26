@@ -25,7 +25,7 @@ Page({
         itemInfo.date_picker=_item.date_picker;
     }
     if(itemInfo==null){
-      hmRoute.push({url:'/page/gt/home/index.new_item_page'})
+      hmRoute.push({url:'/page/gt/home/index.page.new_item_page'})
     }
     hmUI.setStatusBarVisible(false);
   },
@@ -48,7 +48,7 @@ Page({
         itemInfo.date_picker.month=month;
         itemInfo.date_picker.day=day;
         Logger.log("New date picker: "+JSON.stringify(itemInfo.date_picker));
-        hmRoute.push({url:'/page/gt/home/index.new_item_page',params:JSON.stringify(itemInfo)})
+        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo)})
     },12);
     btn.Draw();
   }

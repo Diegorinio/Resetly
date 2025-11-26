@@ -20,6 +20,7 @@ Page({
     titleBar:false
   },
   onInit(params) {
+    // RTLY.ClearStorage();
     if(params!=null && params!=""){
       const itemParams=JSON.parse(params);
       Logger.log(itemParams.date_picker.day);
@@ -90,9 +91,13 @@ Page({
 
     // const datePickerFragment=[_datePickerBackgroundRect,_datePickerInputText,DatePickerEnableButton];
 
-
-    const AddNewElementButton=new GameObject.Button(0,DEVICE_HEIGHT-100,DEVICE_WIDTH,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddNewItem,32);
+    const BackButton=new GameObject.Button(0,DEVICE_HEIGHT-100,80,100,"<",COLORS.RED,COLORS.AMBER,null,()=>{
+      hmRoute.push({url:'/page/gt/home/index.page'})
+    },12,null,80);
+    BackButton.Draw();
+    const AddNewElementButton=new GameObject.Button(BackButton.x+BackButton.width,DEVICE_HEIGHT-100,DEVICE_WIDTH-80,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddNewItem,32);
     AddNewElementButton.Draw();
+    UIElements.push(BackButton);
     UIElements.push(AddNewElementButton);
     UIElements.push(...titleFragment);
     UIElements.push(...timePickerFragment);

@@ -6,7 +6,7 @@ import {Time} from "@zos/sensor";
 import { log, log as Logger } from "@zos/utils";
 import { localStorage } from "@zos/storage";
 export class ItemElement extends GameObject{
-  constructor(x,y,width,height,item=null){
+  constructor(x,y,width,height,item=null,OnEditClick=null){
     super(x,y,width,height);
     this.background={
       x:x,
@@ -21,6 +21,7 @@ export class ItemElement extends GameObject{
     this.editButton=null;
     this.Widgets=[this.background];
     this.Active=false;
+    this.OnEditClick=OnEditClick||(()=>{});
     if(item!=null){
       this.assignedItem=item;
       this.AssignItem(item);
@@ -38,13 +39,13 @@ export class ItemElement extends GameObject{
       const left=this.width*0.20;
       const middle=this.width*0.50;
       const right=this.width*0.30;
-      this.titleLabel=new Text(left-50,this.y,left,this.height,this.height/4,item.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
+      this.titleLabel=new Text(left-70,this.y,left,this.height,this.height/3.6,item.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
 
       this.timerText=new Text(this.titleLabel.x+this.titleLabel.width,this.y,middle,this.height/2,this.height/5,"Absence time",COLORS.WHITE);
 
       this.timerLabel=new Text(this.titleLabel.x+this.titleLabel.width,this.timerText.y+this.timerText.height/4,middle,this.height,this.height/4,"",COLORS.WHITE,null);
 
-      this.startButton=new Button(this.x+this.width-100,this.y+5,100,this.height-10,"EDIT",COLORS.RED,COLORS.BLACK,null,this.ToggleTimer,12,null,this.height/4);
+      this.startButton=new Button(this.x+this.width-105,this.y+5,100,this.height-10,"EDIT",COLORS.RED,COLORS.BLACK,null,this.OnEditClick,12,null,this.height/4);
       this.Widgets.push(this.titleLabel,this.timerText,this.timerLabel,this.startButton);
     }
 
@@ -338,11 +339,12 @@ export function AddItemToStorage(item){
   Logger.log(JSON.stringify(storage.items));
   const newItem={id:storage['items'].length,title:item.title,time:item.time};
   storage.items.push(newItem);
+    Logger.log(JSON.stringify(newItem));
   localStorage.setItem('items_list', storage)
 }
 
 export function RemoveItemFromStorage(item){
-  localStorage.clear();
+  localStorage.removeItem(item);
 }
 
 export function ClearStorage(){

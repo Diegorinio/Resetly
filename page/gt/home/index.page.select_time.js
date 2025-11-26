@@ -31,7 +31,7 @@ Page({
         itemInfo.time_picker.hour=data.hour;
         itemInfo.time_picker.minute=data.minute;
         itemInfo.time_picker.seconds=data.seconds
-        hmRoute.push({url:'/page/gt/home/index.new_item_page',params:JSON.stringify(itemInfo)})
+        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo)})
     });
     timePicker.Draw();
   }
