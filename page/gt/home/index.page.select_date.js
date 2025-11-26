@@ -7,6 +7,7 @@ import { DEVICE_HEIGHT, DEVICE_WIDTH } from "./index.page.s.layout";
 import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
+import { createModal, MODAL_CONFIRM, showToast} from "@zos/interaction";
 const time=new Time();
 const itemInfo={item:null};
 Page({
@@ -17,14 +18,6 @@ Page({
     if(params!=null&& params!=""&&params!==undefined){
         const _item=JSON.parse(params);
         itemInfo.item=_item;
-        Logger.log(JSON.stringify(itemInfo.item));
-        // Logger.log(JSON.stringify(_item));
-        // itemInfo.title=_item.title;
-        // itemInfo.time=_item.time;
-        // itemInfo.date=_item.date;
-        // itemInfo.time_picker=_item.time_picker;
-        // Logger.log("Date picker: "+JSON.stringify(_item.date_picker));
-        // itemInfo.date_picker=_item.date_picker;
     }
     if(itemInfo==null){
       hmRoute.push({url:'/page/gt/home/index.page.new_item_page'})
@@ -46,10 +39,17 @@ Page({
     const btn=new GameObject.Button(0,DEVICE_HEIGHT-50,DEVICE_WIDTH,50,"CONFIRM",COLORS.WHITE,COLORS.BLUE,null,()=>{
         const dateObj=datePicker.getProperty(hmUI.MORE,{});
         const {year,month,day}=dateObj;
+        if(year<=time.getFullYear()&&month<=time.getMonth()&&day<=time.getDate()){
         itemInfo.item.date_picker.year=year;
         itemInfo.item.date_picker.month=month;
         itemInfo.item.date_picker.day=day;
         hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo.item)})
+        }
+        else{
+          showToast({
+            content:"Cannot set date in future"
+          })
+        }
     },12);
     btn.Draw();
   }
