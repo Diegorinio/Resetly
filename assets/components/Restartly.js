@@ -358,7 +358,9 @@ export function OverwriteItemInStorage(item){
 }
 
 export function RemoveItemFromStorage(item){
-  localStorage.removeItem(item);
+  const storage=LoadItemsStorage();
+  storage.items=storage.items.filter(el=>el.id!==item.id);
+  localStorage.setItem('items_list',storage);
 }
 
 export function ClearStorage(){

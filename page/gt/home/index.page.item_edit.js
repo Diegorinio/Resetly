@@ -35,7 +35,13 @@ Page({
         RTLY.OverwriteItemInStorage(item);
         GoBack();
     })
+
+    const DeleteBtn=new GameObject.Button(0,RestartBtn.y+RestartBtn.height,100,80,"DELETE",COLORS.WHITE,COLORS.RED,null,()=>{
+        RTLY.RemoveItemFromStorage(item);
+        GoBack();
+    })
     RestartBtn.Draw();
+    DeleteBtn.Draw();
   }
 });
 function GoBack(){
