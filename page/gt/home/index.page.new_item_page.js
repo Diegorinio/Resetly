@@ -8,7 +8,6 @@ import * as GameObject from "../../../assets/components/Classes";
 import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 import { getText } from "@zos/i18n";
-import { LocalStorage } from '@zos/storage'
 let UIElements=[];
 const time=new Time();
 const itemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
@@ -71,7 +70,7 @@ Page({
     const _timePickerBackgroundRect=new GameObject.GameObjectRect(0,backgroundRect.y+backgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     _timePickerBackgroundRect.Draw();
 
-    const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.time_picker.hour}:${itemInfo.time_picker.minute}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.time_picker.hour.toString().padStart(2,'0')}:${itemInfo.time_picker.minute.toString().padStart(2,'0')}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     _timePickerInputText.Draw();
 
     const TimePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_timePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToTimePicker,16,null,32);
@@ -128,9 +127,9 @@ function GoToDatePicker(){
 
 function AddNewItem(){
   Logger.log(JSON.stringify(itemInfo.date_picker));
-  const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
-  const _itemTime=_itemDate.getTime();
-  const _itemData={title:itemInfo.title,time:_itemTime}
-  RTLY.AddItemToStorage(_itemData);
-  hmRoute.push({url:'/page/gt/home/index.page'});
+    const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
+    const _itemTime=_itemDate.getTime();
+    const _itemData={title:itemInfo.title,time:_itemTime}
+    RTLY.AddItemToStorage(_itemData);
+    hmRoute.push({url:'/page/gt/home/index.page'});
 }
