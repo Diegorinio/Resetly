@@ -45,7 +45,7 @@ export class ItemElement extends GameObject{
       this.timerLabel=new Text(this.x,this.titleLabel.y+this.titleLabel.height/4,this.width-100,this.height,this.height/4,"",COLORS.WHITE,null);
 
       // this.startButton=new ImageButton(this.x+this.width-105,this.y+5,100,this.height-10,"EDIT",COLORS.WHITE,"images/helmet.png",null,this.OnEditClick,12,null,this.height/4);
-      this.editButton=new ImageButton(this.x+this.width-105,this.y+5,100,this.height-10,"",COLORS.RED,getText("options"),null,this.OnEditClick,false,12,0,true);
+      this.editButton=new ImageButton(this.x+this.width-105,this.y+5,100,this.height-10,"",COLORS.RED,getText("edit-item"),null,this.OnEditClick,false,12,0,true);
       this.Widgets.push(this.titleLabel,this.timerLabel,this.editButton);
     }
 

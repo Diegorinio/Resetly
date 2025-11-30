@@ -7,3 +7,6 @@ msgstr "I'm taking break from"
 
 msgid "options"
 msgstr "images/options_gear.png"
+
+msgid "edit-item"
+msgstr "images/edit_icon.png
