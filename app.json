@@ -33,7 +33,8 @@
             "page/gt/home/index.page.new_item_page",
             "page/gt/home/index.page.select_time",
             "page/gt/home/index.page.select_date",
-            "page/gt/home/index.page.item_edit"
+            "page/gt/home/index.page.item_edit",
+            "page/gt/home/index.page.settings"
           ]
         }
       },
