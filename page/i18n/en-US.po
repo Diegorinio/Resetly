@@ -4,3 +4,6 @@ msgstr "Resetly"
 
 msgid "newItemPageText"
 msgstr "I'm taking break from"
+
+msgid "options"
+msgstr "images/options_gear.png"

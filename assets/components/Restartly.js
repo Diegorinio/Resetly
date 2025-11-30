@@ -1,10 +1,11 @@
 import { DEVICE_WIDTH } from "../../page/gt/home/index.page.r.layout";
-import { GameObject, Rect,Text,Button} from "./Classes";
+import { GameObject, Rect,Text,Button, ImageButton} from "./Classes";
 import { COLORS } from "./colors";
 import * as hmUI from "@zos/ui";
 import {Time} from "@zos/sensor";
 import { log, log as Logger } from "@zos/utils";
 import { localStorage } from "@zos/storage";
+import { getText } from "@zos/i18n";
 export class ItemElement extends GameObject{
   constructor(x,y,width,height,item=null,OnEditClick=null){
     super(x,y,width,height);
@@ -26,7 +27,7 @@ export class ItemElement extends GameObject{
       this.assignedItem=item;
       this.AssignItem(item);
     }
-  }
+  } 
     AssignItem=(item)=>{
       this.assignedItem=item;
       this.id=item.id;
@@ -39,14 +40,13 @@ export class ItemElement extends GameObject{
       const left=this.width*0.20;
       const middle=this.width*0.50;
       const right=this.width*0.30;
-      this.titleLabel=new Text(left-70,this.y,left,this.height,this.height/3.6,item.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
+      this.titleLabel=new Text(left,this.y,left,this.height/2,this.height/3.6,item.title,COLORS.WHITE);
 
-      this.timerText=new Text(this.titleLabel.x+this.titleLabel.width,this.y,middle,this.height/2,this.height/5,"Absence time",COLORS.WHITE);
+      this.timerLabel=new Text(this.x,this.titleLabel.y+this.titleLabel.height/4,this.width-100,this.height,this.height/4,"",COLORS.WHITE,null);
 
-      this.timerLabel=new Text(this.titleLabel.x+this.titleLabel.width,this.timerText.y+this.timerText.height/4,middle,this.height,this.height/4,"",COLORS.WHITE,null);
-
-      this.startButton=new Button(this.x+this.width-105,this.y+5,100,this.height-10,"EDIT",COLORS.RED,COLORS.BLACK,null,this.OnEditClick,12,null,this.height/4);
-      this.Widgets.push(this.titleLabel,this.timerText,this.timerLabel,this.startButton);
+      // this.startButton=new ImageButton(this.x+this.width-105,this.y+5,100,this.height-10,"EDIT",COLORS.WHITE,"images/helmet.png",null,this.OnEditClick,12,null,this.height/4);
+      this.editButton=new ImageButton(this.x+this.width-105,this.y+5,100,this.height-10,"",COLORS.RED,getText("options"),null,this.OnEditClick,false,12,0,true);
+      this.Widgets.push(this.titleLabel,this.timerLabel,this.editButton);
     }
 
     Draw=()=>{
