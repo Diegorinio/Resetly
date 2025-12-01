@@ -32,15 +32,27 @@ Page({
     titleText.Draw();
 
     const RestartBtn=new GameObject.Button(75,titleText.y+titleText.height,DEVICE_WIDTH-150,60,"RESTART",COLORS.RED,COLORS.AMBER,null,()=>{
-        const time=new Time();
-        item.time=time.getTime();
-        RTLY.OverwriteItemInStorage(item);
-        GoBack();
+      const dialog=createModal({
+        content:"Reset timer in "+item.title+" ?",
+        autoHide:false,
+        onClick:(keyObj)=>{
+          const {type}=keyObj
+          if(type==MODAL_CONFIRM){
+            const time=new Time();
+            item.time=time.getTime();
+            RTLY.OverwriteItemInStorage(item);
+            GoBack();
+          }
+          else{
+            dialog.show(false);
+          }
+        }
+      })
     },12,null,42)
 
-    const DeleteBtn=new GameObject.Button(DEVICE_WIDTH/2-50,RestartBtn.y+RestartBtn.height+50,100,80,"DELETE",COLORS.WHITE,COLORS.RED,null,()=>{
+    const DeleteBtn=new GameObject.Button(DEVICE_WIDTH/2-50,RestartBtn.y+RestartBtn.height+10,100,80,"DELETE",COLORS.WHITE,COLORS.RED,null,()=>{
       const dialog=createModal({
-        content:"Delete "+item.title,
+        content:"Delete "+item.title+" ?",
         autoHide:false,
         onClick:(keyObj)=>{
           const {type}=keyObj
@@ -53,9 +65,9 @@ Page({
           }
         }
       })
-    })
+    },12,null,24)
 
-    const BackBtn=new GameObject.Button(50,DEVICE_HEIGHT-100,50,50,"BACK",COLORS.WHITE,COLORS.BLUE,null,GoBack,12);
+    const BackBtn=new GameObject.Button(DEVICE_WIDTH/2-50,DEVICE_HEIGHT-100,100,100,"BACK",COLORS.WHITE,COLORS.BLUE,null,GoBack,12,null,32);
     BackBtn.Draw();
     RestartBtn.Draw();
     DeleteBtn.Draw();
