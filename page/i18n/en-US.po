@@ -5,7 +5,7 @@ msgstr "Resetly"
 msgid "newItemPageText"
 msgstr "I'm taking break from"
 
-msgid "options"
+msgid "options-icon"
 msgstr "images/options_gear.png"
 
 msgid "edit-item"

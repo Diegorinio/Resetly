@@ -12,7 +12,9 @@ import { LocalStorage } from '@zos/storage'
 const GlobalLoop=GameLoop.getInstance();
 GlobalLoop.SetTick(1000);
 const logger = Logger.getLogger("helloworld");
-const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,50,32,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
+const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,80,52,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
+
+const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height,"",COLORS.NAVY_BLUE,getText("options-icon"),null,GoToSettingsPage,false,12,1,true);
 
 const newItemButton=new GameObject.Button(0,DEVICE_HEIGHT-105,DEVICE_WIDTH,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,60,null,99);
 
@@ -60,6 +62,7 @@ Page({
       })
     })
 
+    settingsButton.Draw();
     newItemButton.Draw();
     GlobalLoop.Start();
   },
@@ -84,5 +87,8 @@ function GoToEditItemPage(id){
   const _item=items.find(i => i.id==id);
   // logger.log(JSON.stringify(_item))
   hmRoute.push({url:"/page/gt/home/index.page.item_edit",params:JSON.stringify(_item)});
+}
+function GoToSettingsPage(){
+  hmRoute.push({url:"/page/gt/home/index.page.settings"});
 }
 
