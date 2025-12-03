@@ -12,20 +12,18 @@ import { LocalStorage } from '@zos/storage'
 const GlobalLoop=GameLoop.getInstance();
 GlobalLoop.SetTick(1000);
 const logger = Logger.getLogger("helloworld");
+
 const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,80,52,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
+const logoUnderText=new GameObject.Text(0,LOGO.height,DEVICE_WIDTH,30,24,getText('appTitle'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
 
-const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height,"",COLORS.NAVY_BLUE,getText("options-icon"),null,GoToSettingsPage,false,12,1,true);
+const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height,"",COLORS.NAVY_BLUE,getText("options-icon"),null,GoToSettingsPage);
 
-const newItemButton=new GameObject.Button(50,DEVICE_HEIGHT-105,DEVICE_WIDTH-100,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,60,null,99);
+const resetTimerButton=new GameObject.Button(50,DEVICE_HEIGHT-105,DEVICE_WIDTH-100,100,"+",COLORS.WHITE,COLORS.TEAL,null,StartTimer,60,null,99);
 
-const ItemContainer=new GameObject.ViewContainer(0,LOGO.y+LOGO.height,DEVICE_WIDTH,(DEVICE_HEIGHT-LOGO.height-newItemButton.height),[],true,-1);
-const loadedStorage=RTLY.LoadItemsStorage();
-logger.log(JSON.stringify(loadedStorage));
-let itemElements=[];
-let items=[...loadedStorage.items].reverse();
-items.forEach(el=>{
-  logger.log(el.id);
-})
+const TimerText=new GameObject.Text(0,DEVICE_HEIGHT/2-100,DEVICE_WIDTH,150,52,"Press to start",COLORS.WHITE);
+const _Time=new Time();
+const timer={start:_Time.getTime()}
+
 Page({
   style:{
     titleBar:false
@@ -37,58 +35,52 @@ Page({
   build() {
     // hmRoute.push({url:"/page/gt/home/index.page.select_date"});
     LOGO.Draw();
-    logger.debug("page build invoked");
-    // const itttem=new RTLY.Item(0,"Test",523100);
-    let posY=130;
-    const spacing=133;
-    items.forEach(item=>{
-      logger.log(item.title);
-      const _element = new RTLY.ItemElement(10,posY,DEVICE_WIDTH-20,130,item,()=>{
-        GoToEditItemPage(item.id);
-      });
-      _element.Active=true;
-      itemElements.push(_element);
-      ItemContainer.AddWidget(_element);
-      ItemContainer.InitializeWidgets();
-      posY+=spacing;
-    })
-    // const itemElement=new RTLY.ItemElement(0,0,DEVICE_WIDTH,100,itttem);
-    // itemElements.push(itemElement);
-    // ItemContainer.AddWidget(itemElement);
-    // ItemContainer.AddScrollSpacer(1);
-    GlobalLoop.OnTick(()=>{
-      itemElements.forEach(el=>{
-        el.OnTick();
-      })
-    })
-
+    logoUnderText.Draw();
+    TimerText.Draw();
     settingsButton.Draw();
-    newItemButton.Draw();
+    resetTimerButton.Draw();
+    GlobalLoop.OnTick(CalculateTime)
     GlobalLoop.Start();
   },
   onDestroy() {
     logger.debug("page onDestroy invoked");
   },
 });
-
-function CreateNewItem(){
-  // new_item=new RTLY.Item(items.length+1,"Item "+items.length+1,0);
-  // items.push(new_item);
-  // const last_item=itemElements[items.length-1];
-  // const new_itemElement=new RTLY.ItemElement(0,last_item.y+last_item.height+5,last_item.width,last_item.height,new_item);
-  // itemElements.push(new_itemElement)
-  // ItemContainer.AddWidget(new_itemElement);
-  // ItemContainer.InitializeWidgets();
-  hmRoute.push({url:"/page/gt/home/index.page.new_item_page",params:""});
+function StartTimer(){
+    const now=new Time().getTime();
+    timer.start=now;
 }
-
-function GoToEditItemPage(id){
-  logger.log("Presed ",id);
-  const _item=items.find(i => i.id==id);
-  // logger.log(JSON.stringify(_item))
-  hmRoute.push({url:"/page/gt/home/index.page.item_edit",params:JSON.stringify(_item)});
+function ResetTimer(){
+    timer.start=0;
+}
+function CalculateTime(){
+    const now=new Time().getTime();
+    const diff=now-timer.start;
+    const _timeString=formatTime(diff);
+    TimerText.SetText(_timeString);
 }
 function GoToSettingsPage(){
   hmRoute.push({url:"/page/gt/home/index.page.settings"});
 }
+function formatTime(ms) {
+    // zamiana ms na sekundy
+    let totalSeconds = Math.floor(ms / 1000);
 
+    const d = Math.floor(totalSeconds / 86400);
+    totalSeconds %= 86400;
+
+    const g = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+
+    let parts = [];
+
+    if (d > 0) parts.push(`${d}d`);
+    if (g > 0) parts.push(`${g}g`);
+    if (m > 0) parts.push(`${m}m`);
+    if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+
+    return parts.join(" ");
+}

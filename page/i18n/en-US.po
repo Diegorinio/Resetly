@@ -9,4 +9,7 @@ msgid "options-icon"
 msgstr "images/options_gear.png"
 
 msgid "edit-item"
-msgstr "images/edit_icon.png
+msgstr "images/edit_icon.png"
+
+msgid "appTitle"
+msgstr "smoking"
