@@ -17,7 +17,6 @@ const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,80,52,getText('appName'),COLORS.
 const logoUnderText=new GameObject.Text(0,LOGO.height,DEVICE_WIDTH,30,24,getText('appTitle'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
 
 const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height,"",COLORS.NAVY_BLUE,getText("options-icon"),null,GoToSettingsPage);
-
 const resetTimerButton=new GameObject.Button(50,DEVICE_HEIGHT-105,DEVICE_WIDTH-100,100,"+",COLORS.WHITE,COLORS.TEAL,null,StartTimer,60,null,99);
 
 const TimerText=new GameObject.Text(0,DEVICE_HEIGHT/2-100,DEVICE_WIDTH,150,52,"Press to start",COLORS.WHITE);
@@ -46,6 +45,7 @@ Page({
     logger.debug("page onDestroy invoked");
   },
 });
+const x = "chuj".tposx
 function StartTimer(){
     const now=new Time().getTime();
     timer.start=now;

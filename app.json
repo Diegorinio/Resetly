@@ -2,7 +2,7 @@
   "configVersion": "v3",
   "app": {
     "appId": 27058,
-    "appName": "Resetly",
+    "appName": "Resetly smoking",
     "appType": "app",
     "version": {
       "code": 1,
@@ -29,12 +29,7 @@
       "module": {
         "page": {
           "pages": [
-            "page/gt/home/index.page",
-            "page/gt/home/index.page.new_item_page",
-            "page/gt/home/index.page.select_time",
-            "page/gt/home/index.page.select_date",
-            "page/gt/home/index.page.item_edit",
-            "page/gt/home/index.page.settings"
+            "page/gt/home/index.page"
           ]
         }
       },
