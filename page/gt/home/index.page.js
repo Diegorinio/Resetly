@@ -16,7 +16,7 @@ const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,80,52,getText('appName'),COLORS.
 
 const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height,"",COLORS.NAVY_BLUE,getText("options-icon"),null,GoToSettingsPage,false,12,1,true);
 
-const newItemButton=new GameObject.Button(0,DEVICE_HEIGHT-105,DEVICE_WIDTH,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,60,null,99);
+const newItemButton=new GameObject.Button(50,DEVICE_HEIGHT-105,DEVICE_WIDTH-100,100,"+",COLORS.WHITE,COLORS.TEAL,null,CreateNewItem,60,null,99);
 
 const ItemContainer=new GameObject.ViewContainer(0,LOGO.y+LOGO.height,DEVICE_WIDTH,(DEVICE_HEIGHT-LOGO.height-newItemButton.height),[],true,-1);
 const loadedStorage=RTLY.LoadItemsStorage();
@@ -43,7 +43,7 @@ Page({
     const spacing=133;
     items.forEach(item=>{
       logger.log(item.title);
-      const _element = new RTLY.ItemElement(0,posY,DEVICE_WIDTH,130,item,()=>{
+      const _element = new RTLY.ItemElement(10,posY,DEVICE_WIDTH-20,130,item,()=>{
         GoToEditItemPage(item.id);
       });
       _element.Active=true;
@@ -79,7 +79,7 @@ function CreateNewItem(){
   // itemElements.push(new_itemElement)
   // ItemContainer.AddWidget(new_itemElement);
   // ItemContainer.InitializeWidgets();
-  hmRoute.push({url:"/page/gt/home/index.page.new_item_page"});
+  hmRoute.push({url:"/page/gt/home/index.page.new_item_page",params:""});
 }
 
 function GoToEditItemPage(id){

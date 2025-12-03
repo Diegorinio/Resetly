@@ -20,15 +20,13 @@ Page({
   },
   onInit(params) {
     // RTLY.ClearStorage();
-    if(params!=null && params!=""){
+    Logger.log(params);
+    if(params&&params!=="undefined"){
       const itemParams=JSON.parse(params);
       Logger.log(JSON.stringify(itemParams.date_picker));
       itemInfo.title=itemParams.title;
       itemInfo.time=itemParams.time;
       itemInfo.time_picker=itemParams.time_picker;
-      // itemInfo.time_picker.hour=itemParams.time_picker.hour;
-      // itemInfo.time_picker.minute=itemParams.time_picker.minute;
-      // itemInfo.time_picker.seconds=itemParams.time_picker.seconds;
       itemInfo.date_picker=itemParams.date_picker;
     }
     // opcjonalnie ukryj status bar
@@ -36,11 +34,13 @@ Page({
   },
   build() {
     //Title fragment
-    const TitleText=new GameObject.Text(0,50,DEVICE_WIDTH,50,32,getText('newItemPageText'),COLORS.RED);
+    const TitleText=new GameObject.Text(0,10,DEVICE_WIDTH,50,32,getText('newItemPageText'),COLORS.RED);
     TitleText.Draw();
-    const backgroundRect=new GameObject.GameObjectRect(0,120,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
+    
+    // Item name fragment
+    const backgroundRect=new GameObject.GameObjectRect(0,60,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     backgroundRect.Draw();
-    const TitleInputText=new GameObject.Text(10,120,DEVICE_WIDTH-100,80,42,itemInfo.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    const TitleInputText=new GameObject.Text(10,60,DEVICE_WIDTH-100,80,42,itemInfo.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     TitleInputText.Draw();
 
     const InputEnableButton=new GameObject.Button(DEVICE_WIDTH-110,TitleInputText.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,EnableInput,16,null,32);
@@ -90,12 +90,14 @@ Page({
 
     const datePickerFragment=[_datePickerBackgroundRect,_datePickerInputText,DatePickerEnableButton];
 
-    const BackButton=new GameObject.Button(0,DEVICE_HEIGHT-100,80,100,"<",COLORS.RED,COLORS.AMBER,null,()=>{
+
+    const BackButton=new GameObject.Button(0,DEVICE_HEIGHT-125,80,100,"<",COLORS.RED,COLORS.AMBER,null,()=>{
       hmRoute.push({url:'/page/gt/home/index.page'})
     },12,null,80);
     BackButton.Draw();
-    const AddNewElementButton=new GameObject.Button(BackButton.x+BackButton.width,DEVICE_HEIGHT-100,DEVICE_WIDTH-80,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddNewItem,32);
+    const AddNewElementButton=new GameObject.Button(BackButton.x+BackButton.width,DEVICE_HEIGHT-125,DEVICE_WIDTH-80,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddNewItem,32);
     AddNewElementButton.Draw();
+
     UIElements.push(BackButton);
     UIElements.push(AddNewElementButton);
     UIElements.push(...titleFragment);
