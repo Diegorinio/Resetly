@@ -40,7 +40,7 @@ export class ItemElement extends GameObject{
       const left=this.width*0.20;
       const middle=this.width*0.50;
       const right=this.width*0.30;
-      this.titleLabel=new Text(left,this.y,left,this.height/2,this.height/3.6,item.title,COLORS.WHITE);
+      this.titleLabel=new Text(this.x,this.y,this.width-100,this.height/2,this.height/3.6,item.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
 
       this.timerLabel=new Text(this.x,this.titleLabel.y+this.titleLabel.height/4,this.width-100,this.height,this.height/4,"",COLORS.WHITE,null);
 
@@ -366,7 +366,6 @@ export function RemoveItemFromStorage(item){
 export function ClearStorage(){
   localStorage.clear();
 }
-
 
 
 
