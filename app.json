@@ -1,7 +1,7 @@
 {
   "configVersion": "v3",
   "app": {
-    "appId": 27058,
+    "appId": 27059,
     "appName": "Resetly smoking",
     "appType": "app",
     "version": {
@@ -10,7 +10,7 @@
     },
     "icon": "icon.png",
     "vender": "zepp",
-    "description": "App to control your addictions"
+    "description": "App to control your smoke addiction"
   },
   "permissions": [
     "data:os.device.info",

@@ -13,3 +13,12 @@ msgstr "images/edit_icon.png"
 
 msgid "appTitle"
 msgstr "smoking"
+
+msgid "toggleButton-start"
+msgstr "Start"
+
+msgid "toggleButton-reset"
+msgstr "Reset"
+
+msgid "no-smoking-text"
+msgstr "Time without smoking"
