@@ -2,9 +2,6 @@
 msgid "appName"
 msgstr "Resetly"
 
-msgid "newItemPageText"
-msgstr "I'm taking break from"
-
 msgid "options-icon"
 msgstr "images/options_gear.png"
 
@@ -15,10 +12,16 @@ msgid "appTitle"
 msgstr "smoking"
 
 msgid "toggleButton-start"
-msgstr "Start"
+msgstr "Smoke"
 
 msgid "toggleButton-reset"
-msgstr "Reset"
+msgstr "Add smoke"
 
 msgid "no-smoking-text"
 msgstr "Time without smoking"
+
+msgid "history"
+msgstr "reset-history"
+
+msgid "streak"
+msgstr "Smokes today: "
