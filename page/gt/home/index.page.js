@@ -14,10 +14,18 @@ const GlobalLoop=GameLoop.getInstance();
 GlobalLoop.SetTick(1000);
 const logger = Logger.getLogger("helloworld");
 
-const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,80,52,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
+const LOGO=new GameObject.Text(0,0,DEVICE_WIDTH,80,52,getText('appName'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H); 
 
 const logoUnderText=new GameObject.Text(0,LOGO.height,DEVICE_WIDTH,30,24,getText('appTitle'),COLORS.RED,hmUI.align.BOTTOM,hmUI.align.CENTER_H);
 const noSmokeLabel=new GameObject.Text(0,DEVICE_HEIGHT/3,DEVICE_WIDTH,28,22,getText("no-smoking-text"),COLORS.GREEN);
+function DrawUpper(){
+  LOGO.Draw();
+  logoUnderText.Draw();
+  noSmokeLabel.Draw();
+  settingsButton.Draw();
+}
+
+const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height+logoUnderText.height,"",COLORS.AMBER,getText("transparent"),null,GoToSettings,false,0,0,true);
 
 const TimerText=new GameObject.Text(0,noSmokeLabel.y,DEVICE_WIDTH,150,48,"Press to start",COLORS.WHITE);
 
@@ -25,7 +33,18 @@ const smokesTodayLabel=new GameObject.Text(DEVICE_WIDTH/5,TimerText.y+TimerText.
 
 const todaySmokeAmount=new GameObject.Text(smokesTodayLabel.x+smokesTodayLabel.width,smokesTodayLabel.y,DEVICE_WIDTH/2+15,32,25,"0",COLORS.RED,hmUI.align.CENTER_V,hmUI.align.LEFT);
 
-const toggleTimerButton=new GameObject.Button(50,DEVICE_HEIGHT-105,DEVICE_WIDTH-100,100,getText("toggleButton-start"),COLORS.DARK_BLUE,COLORS.RED,null,ToggleTimer,42,null,52);
+const toggleTimerButton=new GameObject.Button(50,DEVICE_HEIGHT-105,DEVICE_WIDTH-100,100,getText("toggleButton-start"),COLORS.WHITE,COLORS.RED,null,ToggleTimer,42,null,52);
+
+function DrawMainUI(){
+  settingsButton.Draw();
+  TimerText.Draw();
+  smokesTodayLabel.Draw();
+  todaySmokeAmount.Draw();
+  toggleTimerButton.Draw();
+  const smokesToday=GetSmokesAmountToday();
+  if(smokesToday)
+    todaySmokeAmount.SetText(smokesToday.toString());
+}
 
 const _Time=new Time();
 const timer={start:_Time.getTime(),isActive:false}
@@ -41,6 +60,7 @@ Page({
   },
   onInit(params) {
     // localStorage.clear();
+    GoToSettings();
     hmUI.setStatusBarVisible(false);
     const savedTimer=GetLocalStorageTimer();
     if(savedTimer){
@@ -59,16 +79,8 @@ Page({
     logger.debug("page onInit invoked");
   },
   build() {
-    LOGO.Draw();
-    logoUnderText.Draw();
-    TimerText.Draw();
-    smokesTodayLabel.Draw();
-    todaySmokeAmount.Draw();
-    const smokesToday=GetSmokesAmountToday();
-    if(smokesToday)
-      todaySmokeAmount.SetText(smokesToday.toString());
-    toggleTimerButton.Draw();
-    noSmokeLabel.Draw();
+    DrawUpper();
+    DrawMainUI();
     GlobalLoop.OnTick(CalculateTime)
     GlobalLoop.Start();
   },
@@ -205,4 +217,8 @@ function UpdateAmount(label){
   }
   const _amount=GetSmokesAmountToday();
   label.SetText(_amount.toString());
+}
+
+function GoToSettings(){
+  hmRoute.push({url:"page/gt/home/index.page.settings"});
 }

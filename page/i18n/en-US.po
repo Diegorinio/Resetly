@@ -25,3 +25,6 @@ msgstr "reset-history"
 
 msgid "streak"
 msgstr "Smokes today: "
+
+msgid "transparent"
+msgstr "images/transparent.png"
