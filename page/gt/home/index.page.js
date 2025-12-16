@@ -7,7 +7,7 @@ import {COLORS} from "../../../assets/components/colors";
 import { GameLoop } from "../../../assets/components/GameLoop";
 import { DEVICE_WIDTH,DEVICE_HEIGHT } from "./index.page.r.layout";
 import { getText } from "@zos/i18n";
-import * as RTLY from "../../../assets/components/Restartly";
+import {LoadItemsStorage, AddItemToStorage,GetItemFromStorage,OverwriteItemInStorage,formatTime, Save,GetLocalStorageHistory,GetLocalStorageTimer,GetSmokesAmountToday,AddToLocalStorageHistory}from "../../../assets/components/Restartly";
 import { localStorage } from '@zos/storage'
 import { createModal, MODAL_CONFIRM} from "@zos/interaction";
 const GlobalLoop=GameLoop.getInstance();
@@ -134,81 +134,6 @@ function CalculateTime(){
     const _timeString=formatTime(diff);
     TimerText.SetText(_timeString);
   }
-}
-function formatTime(ms) {
-    // zamiana ms na sekundy
-    let totalSeconds = Math.floor(ms / 1000);
-
-    const d = Math.floor(totalSeconds / 86400);
-    totalSeconds %= 86400;
-
-    const g = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-
-    const m = Math.floor(totalSeconds / 60);
-    const s = totalSeconds % 60;
-
-    let parts = [];
-
-    if (d > 0) parts.push(`${d}d`);
-    if (g > 0) parts.push(`${g}g`);
-    if (m > 0) parts.push(`${m}m`);
-    if (s > 0 || parts.length === 0) parts.push(`${s}s`);
-
-    return parts.join(" ");
-}
-
-function Save(){
-  logger.log(JSON.stringify(timer));
-  localStorage.setItem("timer",JSON.stringify(timer))
-}
-
-function GetLocalStorageTimer(){
-  const storedTimer=localStorage.getItem("timer");
-  if(storedTimer){
-    return JSON.parse(storedTimer);
-  }
-  else{
-    return null;
-  }
-}
-
-function GetLocalStorageHistory(){
-  const _history=localStorage.getItem(getText("history"));
-  if(_history){
-    return JSON.parse(_history);
-  }
-  else{
-    return null;
-  }
-}
-
-function AddToLocalStorageHistory(itemDate){
-  const _local=localStorage.getItem(getText("history"));
-  if(!_local){
-    const _local={history:[]}
-    localStorage.setItem(getText("history"),JSON.stringify(_local));
-  }
-  const storage=JSON.parse(localStorage.getItem(getText("history")));
-  let _storageArray=storage.history;
-  _storageArray.push(itemDate);
-  storage.history=_storageArray;
-  localStorage.setItem(getText("history"),JSON.stringify(storage));
-}
-
-function GetSmokesAmountToday(){
-  const stored=GetLocalStorageHistory();
-  if(!stored||!stored.history||stored.history.length===0){
-    return null;
-  }
-  let amountToday=0
-  const _currentTime= new Time();
-  stored.history.forEach(el=>{
-    if(el.day==_currentTime.getDate()){
-      amountToday+=1;
-    }
-  })
-  return amountToday
 }
 
 function UpdateAmount(label){

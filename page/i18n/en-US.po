@@ -28,3 +28,21 @@ msgstr "Smokes today: "
 
 msgid "transparent"
 msgstr "images/transparent.png"
+
+msgid "settings-title"
+msgstr "History"
+
+msgid "settings-streak"
+msgstr "Longest streak"
+
+msgid "button-day"
+msgstr "Day"
+
+msgid "button-week"
+msgstr "Week"
+
+msgid "button-month"
+msgstr "Month"
+
+msgid "settings-smokes-taken"
+msgid "Smokes taken"

@@ -86,30 +86,6 @@ export class Item{
 }
 
 
-export function formatTime(ms) {
-    // zamiana ms na sekundy
-    let totalSeconds = Math.floor(ms / 1000);
-
-    const d = Math.floor(totalSeconds / 86400);
-    totalSeconds %= 86400;
-
-    const g = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-
-    const m = Math.floor(totalSeconds / 60);
-    const s = totalSeconds % 60;
-
-    let parts = [];
-
-    if (d > 0) parts.push(`${d}d`);
-    if (g > 0) parts.push(`${g}g`);
-    if (m > 0) parts.push(`${m}m`);
-    if (s > 0 || parts.length === 0) parts.push(`${s}s`);
-
-    return parts.join(" ");
-}
-
-
 export class Keyboard {
   constructor(opts) {
     this.x = opts.x || 0;
@@ -367,5 +343,89 @@ export function ClearStorage(){
   localStorage.clear();
 }
 
+export function formatTime(ms) {
+    // zamiana ms na sekundy
+    let totalSeconds = Math.floor(ms / 1000);
+
+    const d = Math.floor(totalSeconds / 86400);
+    totalSeconds %= 86400;
+
+    const g = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+
+    let parts = [];
+
+    if (d > 0) parts.push(`${d}d`);
+    if (g > 0) parts.push(`${g}g`);
+    if (m > 0) parts.push(`${m}m`);
+    if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+
+    return parts.join(" ");
+}
+
+export function Save(){
+  logger.log(JSON.stringify(timer));
+  localStorage.setItem("timer",JSON.stringify(timer))
+}
+
+export function GetLocalStorageTimer(){
+  const storedTimer=localStorage.getItem("timer");
+  if(storedTimer){
+    return JSON.parse(storedTimer);
+  }
+  else{
+    return null;
+  }
+}
+
+export function GetLocalStorageHistory(){
+  const _history=localStorage.getItem(getText("history"));
+  if(_history){
+    return JSON.parse(_history);
+  }
+  else{
+    return null;
+  }
+}
+
+export function AddToLocalStorageHistory(itemDate){
+  const _local=localStorage.getItem(getText("history"));
+  if(!_local){
+    const _local={history:[],high_score:0}
+    localStorage.setItem(getText("history"),JSON.stringify(_local));
+  }
+  const storage=JSON.parse(localStorage.getItem(getText("history")));
+  let _storageArray=storage.history;
+  _storageArray.push(itemDate);
+  storage.history=_storageArray;
+  localStorage.setItem(getText("history"),JSON.stringify(storage));
+}
+
+export function GetSmokesAmountToday(){
+  const stored=GetLocalStorageHistory();
+  if(!stored||!stored.history||stored.history.length===0){
+    return null;
+  }
+  let amountToday=0
+  const _currentTime= new Time();
+  stored.history.forEach(el=>{
+    if(el.day==_currentTime.getDate()){
+      amountToday+=1;
+    }
+  })
+  return amountToday
+}
 
 
+export function GetHistoryToday(){
+  const stored=GetLocalStorageHistory();
+  if(!stored||!stored.history||stored.history.length===0){
+    return null;
+  }
+  const now = new Time();
+  const todayHistory=stored.history.filter(el=>el.day==now.getDate()&&el.month==now.getMonth()&&el.year==now.getFullYear());
+  return todayHistory;
+}
