@@ -7,7 +7,7 @@ import {COLORS} from "../../../assets/components/colors";
 import { GameLoop } from "../../../assets/components/GameLoop";
 import { DEVICE_WIDTH,DEVICE_HEIGHT } from "./index.page.r.layout";
 import { getText } from "@zos/i18n";
-import {LoadItemsStorage, AddItemToStorage,GetItemFromStorage,OverwriteItemInStorage,formatTime, Save,GetLocalStorageHistory,GetLocalStorageTimer,GetSmokesAmountToday,AddToLocalStorageHistory}from "../../../assets/components/Restartly";
+import {formatTime, Save,GetLocalStorageHistory,GetLocalStorageTimer,GetSmokesAmountToday,AddToLocalStorageHistory}from "../../../assets/components/Restartly";
 import { localStorage } from '@zos/storage'
 import { createModal, MODAL_CONFIRM} from "@zos/interaction";
 const GlobalLoop=GameLoop.getInstance();
@@ -60,7 +60,7 @@ Page({
   },
   onInit(params) {
     // localStorage.clear();
-    GoToSettings();
+    // GoToSettings();
     hmUI.setStatusBarVisible(false);
     const savedTimer=GetLocalStorageTimer();
     if(savedTimer){
@@ -86,7 +86,7 @@ Page({
   },
   onDestroy() {
     logger.debug("page onDestroy invoked");
-    Save();
+    Save(timer);
   },
 });
 

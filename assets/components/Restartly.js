@@ -366,8 +366,7 @@ export function formatTime(ms) {
     return parts.join(" ");
 }
 
-export function Save(){
-  logger.log(JSON.stringify(timer));
+export function Save(timer){
   localStorage.setItem("timer",JSON.stringify(timer))
 }
 
@@ -428,4 +427,15 @@ export function GetHistoryToday(){
   const now = new Time();
   const todayHistory=stored.history.filter(el=>el.day==now.getDate()&&el.month==now.getMonth()&&el.year==now.getFullYear());
   return todayHistory;
+}
+
+export function GetWeekHistory(){
+  const stored=GetLocalStorageHistory();
+  if(!stored||!stored.history||stored.history.length===0){
+    return null;
+  }
+  const now=new Time().getTime();
+  const week=now-6*24*60*60;
+  const weekHistory=stored.history.filter(el=>el.end>=week&&el.end<=now);
+  return weekHistory;
 }

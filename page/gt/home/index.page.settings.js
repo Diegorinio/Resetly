@@ -17,7 +17,7 @@ const buttonsGrid=new GameObject.HContainer(0,title.y+title.height+10,DEVICE_WID
 
 //Buttons
 const daybutton=new GameObject.Button(0,0,10,10,getText("button-day"),COLORS.WHITE,COLORS.BLUE,null,GetToday);
-const weekButton=new GameObject.Button(0,0,10,10,getText("button-week"),COLORS.WHITE,COLORS.BLUE,null,()=>{});
+const weekButton=new GameObject.Button(0,0,10,10,getText("button-week"),COLORS.WHITE,COLORS.BLUE,null,GetWeek);
 const monthButton=new GameObject.Button(0,0,10,10,getText("button-month"),COLORS.WHITE,COLORS.BLUE,null,()=>{});
 
 function DrawBaseUI(){
@@ -61,9 +61,10 @@ function GetStats(data){
   let longestTime=0;
   let smokesAmount=0;
   data.forEach(el=>{
+    Logger.log(el.day);
     smokesAmount+=1;
     const diff=el.end-el.start;
-    if(el.longestTime<diff){
+    if(longestTime<diff){
       longestTime=diff;
     }
   })
@@ -72,6 +73,14 @@ function GetStats(data){
 function GetToday(){
   const todayHistory=RTLY.GetHistoryToday();
   const stats=GetStats(todayHistory);
+  Logger.log(stats.length);
+  longestTimeValue.SetText(RTLY.formatTime(stats.longestTime));
+  smokesAmountValue.SetText(stats.smokesAmount.toString());
+}
+
+function GetWeek(){
+  const weekHistory=RTLY.GetWeekHistory();
+  const stats=GetStats(weekHistory);
   longestTimeValue.SetText(RTLY.formatTime(stats.longestTime));
   smokesAmountValue.SetText(stats.smokesAmount.toString());
 }
