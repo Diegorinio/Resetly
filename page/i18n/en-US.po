@@ -45,4 +45,7 @@ msgid "button-month"
 msgstr "Month"
 
 msgid "settings-smokes-taken"
-msgid "Smokes taken"
+msgstr "Smokes taken"
+
+msgid "settings-null"
+msgstr "No data"

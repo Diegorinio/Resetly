@@ -13,6 +13,7 @@ import { getText } from "@zos/i18n";
 
 
 const title=new GameObject.Text(0,30,DEVICE_WIDTH,80,32,getText("settings-title"));
+const goToMainButton= new GameObject.ImageButton(title.x,title.y,title.width,title.height,"",null,getText("transparent"),null,GoToMain,false,12,0,true);
 const buttonsGrid=new GameObject.HContainer(0,title.y+title.height+10,DEVICE_WIDTH,80);
 
 //Buttons
@@ -22,6 +23,7 @@ const monthButton=new GameObject.Button(0,0,10,10,getText("button-month"),COLORS
 
 function DrawBaseUI(){
   title.Draw();
+  goToMainButton.Draw();
   buttonsGrid.AddWidget(daybutton);
   buttonsGrid.AddWidget(weekButton);
   buttonsGrid.AddWidget(monthButton);
@@ -60,6 +62,7 @@ Page({
 function GetStats(data){
   let longestTime=0;
   let smokesAmount=0;
+  if(data){
   data.forEach(el=>{
     Logger.log(el.day);
     smokesAmount+=1;
@@ -68,14 +71,17 @@ function GetStats(data){
       longestTime=diff;
     }
   })
+  }
+  else{
+    return {longestTime:0,smokesAmount:getText("settings-null")};
+  }
   return {longestTime:longestTime,smokesAmount:smokesAmount};
 }
 function GetToday(){
   const todayHistory=RTLY.GetHistoryToday();
-  const stats=GetStats(todayHistory);
-  Logger.log(stats.length);
-  longestTimeValue.SetText(RTLY.formatTime(stats.longestTime));
-  smokesAmountValue.SetText(stats.smokesAmount.toString());
+    const stats=GetStats(todayHistory);
+    longestTimeValue.SetText(RTLY.formatTime(stats.longestTime));
+    smokesAmountValue.SetText(stats.smokesAmount.toString());
 }
 
 function GetWeek(){
@@ -83,4 +89,8 @@ function GetWeek(){
   const stats=GetStats(weekHistory);
   longestTimeValue.SetText(RTLY.formatTime(stats.longestTime));
   smokesAmountValue.SetText(stats.smokesAmount.toString());
+}
+
+function GoToMain(){
+  hmRoute.back();
 }

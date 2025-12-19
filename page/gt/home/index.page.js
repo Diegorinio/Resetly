@@ -27,7 +27,7 @@ function DrawUpper(){
 
 const settingsButton=new GameObject.ImageButton(LOGO.x,LOGO.y,LOGO.width,LOGO.height+logoUnderText.height,"",COLORS.AMBER,getText("transparent"),null,GoToSettings,false,0,0,true);
 
-const TimerText=new GameObject.Text(0,noSmokeLabel.y,DEVICE_WIDTH,150,48,"Press to start",COLORS.WHITE);
+const TimerText=new GameObject.Text(0,noSmokeLabel.y,DEVICE_WIDTH,150,48,"",COLORS.WHITE);
 
 const smokesTodayLabel=new GameObject.Text(DEVICE_WIDTH/5,TimerText.y+TimerText.height-15,DEVICE_WIDTH/2,32,25,getText("streak"),COLORS.RED,hmUI.align.CENTER_V,hmUI.align.RIGHT);
 
