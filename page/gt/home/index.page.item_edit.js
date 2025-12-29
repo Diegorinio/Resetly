@@ -38,10 +38,11 @@ Page({
         onClick:(keyObj)=>{
           const {type}=keyObj
           if(type==MODAL_CONFIRM){
-            const time=new Time();
-            item.time=time.getTime();
-            RTLY.OverwriteItemInStorage(item);
-            GoBack();
+            hmRoute.push({url:"/page/gt/home/index.page.new_item_page",params:{edit:{isEdit:true,id:item.id},item:item}})
+            // const time=new Time();
+            // item.time=time.getTime();
+            // RTLY.OverwriteItemInStorage(item);
+            // GoBack();
           }
           else{
             dialog.show(false);

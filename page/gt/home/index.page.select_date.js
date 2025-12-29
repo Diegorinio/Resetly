@@ -9,7 +9,7 @@ import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 import { createModal, MODAL_CONFIRM, showToast} from "@zos/interaction";
 const time=new Time();
-const itemInfo={item:null};
+const itemInfo={item:null,edit:{isEdit:false,id:0}};
 Page({
     style:{
     titleBar:false
@@ -18,6 +18,9 @@ Page({
     if(params!=null&& params!=""&&params!==undefined){
         const _item=JSON.parse(params);
         itemInfo.item=_item;
+        itemInfo.edit.isEdit=_item.edit.isEdit;
+        itemInfo.edit.id=_item.edit.id;
+        Logger.log(JSON.stringify(itemInfo.edit));
     }
     if(itemInfo==null){
       hmRoute.push({url:'/page/gt/home/index.page.new_item_page'})
@@ -43,7 +46,7 @@ Page({
         itemInfo.item.date_picker.year=year;
         itemInfo.item.date_picker.month=month;
         itemInfo.item.date_picker.day=day;
-        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo.item)})
+        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo)})
         }
         else{
           showToast({

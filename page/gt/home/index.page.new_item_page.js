@@ -10,7 +10,7 @@ import * as RTLY from "../../../assets/components/Restartly";
 import { getText } from "@zos/i18n";
 let UIElements=[];
 const time=new Time();
-const itemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()},edit:{isEdit:false,id:0}};
 let keyboard=null;
 const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
 const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
@@ -23,11 +23,20 @@ Page({
     Logger.log(params);
     if(params&&params!=="undefined"){
       const itemParams=JSON.parse(params);
-      Logger.log(JSON.stringify(itemParams.date_picker));
-      itemInfo.title=itemParams.title;
-      itemInfo.time=itemParams.time;
-      itemInfo.time_picker=itemParams.time_picker;
-      itemInfo.date_picker=itemParams.date_picker;
+      if(itemParams.edit.isEdit==true){
+        Logger.log("Editing");
+        itemInfo.title=itemParams.item.title;
+        itemInfo.edit.isEdit=itemParams.isEdit;
+        itemInfo.edit.id=itemParams.item.id;
+      }
+      else{
+        Logger.log(JSON.stringify(itemInfo.edit));
+        itemInfo.title=itemParams.title;
+        itemInfo.time=itemParams.time;
+        itemInfo.time_picker=itemParams.time_picker;
+        itemInfo.date_picker=itemParams.date_picker;
+      }
+
     }
     // opcjonalnie ukryj status bar
     hmUI.setStatusBarVisible(false);
@@ -50,10 +59,8 @@ Page({
       x: 0,
       y: 100,
       onChange: (txt) => {
-        console.log("Wpisywane: " + txt);
       },
       onSubmit: (txt) => {
-        console.log("Zatwierdzono: " + txt);
         DisableInput();
         itemInfo.title=txt;
         TitleInputText.SetText(txt);
@@ -95,7 +102,7 @@ Page({
       hmRoute.push({url:'/page/gt/home/index.page'})
     },12,null,80);
     BackButton.Draw();
-    const AddNewElementButton=new GameObject.Button(BackButton.x+BackButton.width,DEVICE_HEIGHT-125,DEVICE_WIDTH-80,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddNewItem,32);
+    const AddNewElementButton=new GameObject.Button(BackButton.x+BackButton.width,DEVICE_HEIGHT-125,DEVICE_WIDTH-80,100,"ADD NEW",COLORS.WHITE,COLORS.BLUE,null,AddEditItem,32);
     AddNewElementButton.Draw();
 
     UIElements.push(BackButton);
@@ -127,11 +134,16 @@ function GoToDatePicker(){
   hmRoute.push({url:'/page/gt/home/index.page.select_date',params:JSON.stringify(itemInfo)});
 }
 
-function AddNewItem(){
-  Logger.log(JSON.stringify(itemInfo.date_picker));
-    const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
-    const _itemTime=_itemDate.getTime();
-    const _itemData={title:itemInfo.title,time:_itemTime}
-    RTLY.AddItemToStorage(_itemData);
-    hmRoute.push({url:'/page/gt/home/index.page'});
+function AddEditItem(){
+  if(itemInfo.isEdit==true){
+    Logger.log("Editing complete");
+  }
+  else{
+    Logger.log(JSON.stringify(itemInfo.date_picker));
+      const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
+      const _itemTime=_itemDate.getTime();
+      const _itemData={title:itemInfo.title,time:_itemTime}
+      RTLY.AddItemToStorage(_itemData);
+      hmRoute.push({url:'/page/gt/home/index.page'});
+  }
 }

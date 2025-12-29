@@ -10,7 +10,7 @@ import * as RTLY from "../../../assets/components/Restartly";
 import { createModal, MODAL_CONFIRM, showToast} from "@zos/interaction";
 const time=new Time();
 const time_picker_data={hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()};
-const itemInfo={"title":"Item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()}};
+const itemInfo={"title":"Item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()},edit:{isEdit:false,id:0}};
 Page({
     // style:{
     // titleBar:false
@@ -18,11 +18,15 @@ Page({
   onInit(params) {
     if(params!=null&& params!=""){
         const _item=JSON.parse(params);
+        Logger.log("timer picker: ", _item.edit);
         itemInfo.title=_item.title;
         itemInfo.time=_item.time;
         itemInfo.date=_item.date;
         itemInfo.time_picker=_item.time_picker;
-        Logger.log(itemInfo.time_picker.hour);
+        itemInfo.item=_item;
+        itemInfo.edit.isEdit=_item.edit.isEdit;
+        itemInfo.edit.id=_item.edit.id;
+        // Logger.log(itemInfo.time_picker.hour);
     }
     // hmUI.setStatusBarVisible(false);
   },
