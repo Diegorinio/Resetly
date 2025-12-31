@@ -72,14 +72,7 @@ Page({
 });
 
 function CreateNewItem(){
-  // new_item=new RTLY.Item(items.length+1,"Item "+items.length+1,0);
-  // items.push(new_item);
-  // const last_item=itemElements[items.length-1];
-  // const new_itemElement=new RTLY.ItemElement(0,last_item.y+last_item.height+5,last_item.width,last_item.height,new_item);
-  // itemElements.push(new_itemElement)
-  // ItemContainer.AddWidget(new_itemElement);
-  // ItemContainer.InitializeWidgets();
-  hmRoute.push({url:"/page/gt/home/index.page.new_item_page",params:""});
+  hmRoute.push({url:"/page/gt/home/index.page.new_item_page"});
 }
 
 function GoToEditItemPage(id){

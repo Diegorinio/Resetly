@@ -10,3 +10,6 @@ msgstr "images/options_gear.png"
 
 msgid "edit-item"
 msgstr "images/edit_icon.png
+
+msgid "empty-title"
+msgstr "Item"

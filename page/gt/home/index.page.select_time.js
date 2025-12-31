@@ -10,47 +10,31 @@ import * as RTLY from "../../../assets/components/Restartly";
 import { createModal, MODAL_CONFIRM, showToast} from "@zos/interaction";
 const time=new Time();
 const time_picker_data={hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()};
-const itemInfo={"title":"Item","time":0,"time_picker":time_picker_data,"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()},edit:{isEdit:false,id:0}};
+const ItemInfo=RTLY.ItemData;
 Page({
-    // style:{
-    // titleBar:false
+  //   style:{
+  //   titleBar:false
   // },
   onInit(params) {
-    if(params!=null&& params!=""){
-        const _item=JSON.parse(params);
-        Logger.log("timer picker: ", _item.edit);
-        itemInfo.title=_item.title;
-        itemInfo.time=_item.time;
-        itemInfo.date=_item.date;
-        itemInfo.time_picker=_item.time_picker;
-        itemInfo.item=_item;
-        itemInfo.edit.isEdit=_item.edit.isEdit;
-        itemInfo.edit.id=_item.edit.id;
-        // Logger.log(itemInfo.time_picker.hour);
+    if(params!=null&&params!=""&&params!=="undefined"){
+      const _params=JSON.parse(params);
+      RTLY.SetBaseItemDataFromParams(ItemInfo,_params);
+      Logger.log("Is edit: ", ItemInfo.edit);
+
     }
-    // hmUI.setStatusBarVisible(false);
+    else{
+      hmRoute.back();
+    }
+    hmUI.setStatusBarVisible(false);
   },
   build() {
     const timePicker=new RTLY.TimePicker("Start time","",()=>{
         const data=timePicker.time_picker_data;
-        if(data.hour<=time.getHours()&&data.minute<=time.getMinutes()){
-          itemInfo.time_picker.hour=data.hour;
-          itemInfo.time_picker.minute=data.minute;
-          itemInfo.time_picker.seconds=data.seconds
-          hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo)})
-        }
-        else{
-          if(data.hour>time.getHours()){
-            showToast({
-              content:"Cannot set hour from the future"
-            })
-          }
-          if(data.minute>time.getMinutes()){
-            showToast({
-              content:"Cannot set minutes from the future"
-            })
-          }
-        }
+        Logger.log(data);
+          ItemInfo.time_picker.hour=data.hour;
+          ItemInfo.time_picker.minute=data.minute;
+          ItemInfo.time_picker.seconds=data.seconds
+          hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(ItemInfo)})
     });
     timePicker.Draw();
   }

@@ -23,7 +23,6 @@ Page({
       item.id=itemParams.id;
       item.title=itemParams.title;
       item.time=itemParams.time;
-      Logger.log(JSON.stringify(item));
     }
     hmUI.setStatusBarVisible(false);
   },
@@ -38,11 +37,7 @@ Page({
         onClick:(keyObj)=>{
           const {type}=keyObj
           if(type==MODAL_CONFIRM){
-            hmRoute.push({url:"/page/gt/home/index.page.new_item_page",params:{edit:{isEdit:true,id:item.id},item:item}})
-            // const time=new Time();
-            // item.time=time.getTime();
-            // RTLY.OverwriteItemInStorage(item);
-            // GoBack();
+            hmRoute.push({url:"/page/gt/home/index.page.new_item_page",params:JSON.stringify({edit:{isEdit:true,item:item}})});
           }
           else{
             dialog.show(false);

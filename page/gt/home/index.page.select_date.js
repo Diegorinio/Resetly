@@ -9,21 +9,25 @@ import { COLORS } from "../../../assets/components/colors";
 import * as RTLY from "../../../assets/components/Restartly";
 import { createModal, MODAL_CONFIRM, showToast} from "@zos/interaction";
 const time=new Time();
-const itemInfo={item:null,edit:{isEdit:false,id:0}};
+const ItemInfo=RTLY.ItemData;
 Page({
     style:{
     titleBar:false
   },
   onInit(params) {
-    if(params!=null&& params!=""&&params!==undefined){
-        const _item=JSON.parse(params);
-        itemInfo.item=_item;
-        itemInfo.edit.isEdit=_item.edit.isEdit;
-        itemInfo.edit.id=_item.edit.id;
-        Logger.log(JSON.stringify(itemInfo.edit));
+    if(params!=null&& params!=""&&params!=="undefined"){
+        const _params=JSON.parse(params);
+        RTLY.SetBaseItemDataFromParams(ItemInfo,_params);
+
+        Logger.log("ItemInfo select_date: ",JSON.stringify(ItemInfo));
+        // ItemInfo.item=_item;
+        // ItemInfo.edit.isEdit=_item.edit.isEdit;
+        // ItemInfo.edit.id=_item.edit.id;
+        // Logger.log(JSON.stringify(ItemInfo.edit));
     }
-    if(itemInfo==null){
-      hmRoute.push({url:'/page/gt/home/index.page.new_item_page'})
+    else
+    {
+      hmRoute.back();
     }
     hmUI.setStatusBarVisible(false);
   },
@@ -33,25 +37,20 @@ Page({
         w: 480,
       x: 20,
       y: 120,
-      startYear: itemInfo.item.date_picker.year,
-      endYear: itemInfo.item.date_picker.year,
-      initYear: itemInfo.item.date_picker.year,
-      initMonth: itemInfo.item.date_picker.month,
-      initDay: itemInfo.item.date_picker.day,
+      startYear: ItemInfo.date_picker.year,
+      endYear: ItemInfo.date_picker.year,
+      initYear: ItemInfo.date_picker.year,
+      initMonth: ItemInfo.date_picker.month,
+      initDay: ItemInfo.date_picker.day,
     })
     const btn=new GameObject.Button(0,DEVICE_HEIGHT-50,DEVICE_WIDTH,50,"CONFIRM",COLORS.WHITE,COLORS.BLUE,null,()=>{
         const dateObj=datePicker.getProperty(hmUI.MORE,{});
         const {year,month,day}=dateObj;
         if(year<=time.getFullYear()&&month<=time.getMonth()&&day<=time.getDate()){
-        itemInfo.item.date_picker.year=year;
-        itemInfo.item.date_picker.month=month;
-        itemInfo.item.date_picker.day=day;
-        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(itemInfo)})
-        }
-        else{
-          showToast({
-            content:"Cannot travel to the future"
-          })
+        ItemInfo.date_picker.year=year;
+        ItemInfo.date_picker.month=month;
+        ItemInfo.date_picker.day=day;
+        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(ItemInfo)})
         }
     },12);
     btn.Draw();

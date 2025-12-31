@@ -367,5 +367,15 @@ export function ClearStorage(){
   localStorage.clear();
 }
 
+export const ItemData = {title:"Item",time:0,time_picker:{hour:0,minute:0,seconds:0},date_picker:{day:0,month:0,year:0},edit:{isEdit:false,item:null}};
+//If is in edit
+// edit:{item:item,id:id};
 
-
+export function SetBaseItemDataFromParams(base,_params){
+  base.title=_params.title;
+  base.time=_params.time;
+  base.time_picker=_params.time_picker;
+  base.date_picker=_params.date_picker;
+  base.edit.isEdit=_params.edit.isEdit;
+  base.edit.item=_params.edit.item;
+}

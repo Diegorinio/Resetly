@@ -10,35 +10,49 @@ import * as RTLY from "../../../assets/components/Restartly";
 import { getText } from "@zos/i18n";
 let UIElements=[];
 const time=new Time();
-const itemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()},edit:{isEdit:false,id:0}};
+// const ItemInfo={"title":"Item","time":0,"time_picker":{hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()},"date_picker":{day:time.getDate(),month:time.getMonth(),year:time.getFullYear()},edit:{isEdit:false,id:0}};
+const ItemInfo=RTLY.ItemData;
 let keyboard=null;
-const hours = Array.from({length:24}, (_,i) => i.toString().padStart(2,'0'));
-const minutes = Array.from({length:60}, (_,i) => i.toString().padStart(2,'0'));
 Page({
   style:{
     titleBar:false
   },
   onInit(params) {
-    // RTLY.ClearStorage();
-    Logger.log(params);
+    ItemInfo.edit.isEdit=false;
+    ItemInfo.edit.item=null;
     if(params&&params!=="undefined"){
-      const itemParams=JSON.parse(params);
-      if(itemParams.edit.isEdit==true){
-        Logger.log("Editing");
-        itemInfo.title=itemParams.item.title;
-        itemInfo.edit.isEdit=itemParams.isEdit;
-        itemInfo.edit.id=itemParams.item.id;
+      const _params=JSON.parse(params);
+      if(_params.edit?.isEdit){
+        Logger.log("Edit");
+        ItemInfo.edit.isEdit=true;
+        ItemInfo.edit.item=_params.edit.item;
+        ItemInfo.title=_params.edit.item.title;
+        ItemInfo.time=_params.edit.item.time;
+        if(_params.time_picker&&_params.date_picker){
+          ItemInfo.time_picker=_params.time_picker;
+          ItemInfo.date_picker=_params.date_picker;
+        }
+        else{
+        ItemInfo.time_picker={
+          hour:time.getHours(),
+          minute:time.getMinutes(),
+          seconds:time.getSeconds()
+        };
+        ItemInfo.date_picker={
+          day:time.getDate(),
+          month:time.getMonth(),
+          year:time.getFullYear()
+        };
+      }
       }
       else{
-        Logger.log(JSON.stringify(itemInfo.edit));
-        itemInfo.title=itemParams.title;
-        itemInfo.time=itemParams.time;
-        itemInfo.time_picker=itemParams.time_picker;
-        itemInfo.date_picker=itemParams.date_picker;
+        Logger.log("Adding new");
+        SetTodayItemData();
       }
-
     }
-    // opcjonalnie ukryj status bar
+    else{
+      SetTodayItemData();
+    }
     hmUI.setStatusBarVisible(false);
   },
   build() {
@@ -49,7 +63,7 @@ Page({
     // Item name fragment
     const backgroundRect=new GameObject.GameObjectRect(0,60,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     backgroundRect.Draw();
-    const TitleInputText=new GameObject.Text(10,60,DEVICE_WIDTH-100,80,42,itemInfo.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    const TitleInputText=new GameObject.Text(10,60,DEVICE_WIDTH-100,80,42,ItemInfo.title,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     TitleInputText.Draw();
 
     const InputEnableButton=new GameObject.Button(DEVICE_WIDTH-110,TitleInputText.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,EnableInput,16,null,32);
@@ -62,7 +76,7 @@ Page({
       },
       onSubmit: (txt) => {
         DisableInput();
-        itemInfo.title=txt;
+        ItemInfo.title=txt;
         TitleInputText.SetText(txt);
       },
       OnClose:()=>{
@@ -77,7 +91,7 @@ Page({
     const _timePickerBackgroundRect=new GameObject.GameObjectRect(0,backgroundRect.y+backgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     _timePickerBackgroundRect.Draw();
 
-    const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.time_picker.hour.toString().padStart(2,'0')}:${itemInfo.time_picker.minute.toString().padStart(2,'0')}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
+    const _timePickerInputText=new GameObject.Text(10,_timePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${ItemInfo.time_picker.hour.toString().padStart(2,'0')}:${ItemInfo.time_picker.minute.toString().padStart(2,'0')}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.CENTER_H);
     _timePickerInputText.Draw();
 
     const TimePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_timePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToTimePicker,16,null,32);
@@ -89,7 +103,7 @@ Page({
     const _datePickerBackgroundRect=new GameObject.GameObjectRect(0,_timePickerBackgroundRect.y+_timePickerBackgroundRect.height+1,DEVICE_WIDTH,80,COLORS.DARK_GRAY);
     _datePickerBackgroundRect.Draw();
 
-    const _datePickerInputText=new GameObject.Text(10,_datePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${itemInfo.date_picker.day}/${itemInfo.date_picker.month}/${itemInfo.date_picker.year}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
+    const _datePickerInputText=new GameObject.Text(10,_datePickerBackgroundRect.y,DEVICE_WIDTH-100,80,42,`${ItemInfo.date_picker.day}/${ItemInfo.date_picker.month}/${ItemInfo.date_picker.year}`,COLORS.WHITE,hmUI.align.CENTER_V,hmUI.align.LEFT);
     _datePickerInputText.Draw();
 
     const DatePickerEnableButton=new GameObject.Button(DEVICE_WIDTH-110,_datePickerBackgroundRect.y+2,100,75,"INPUT",COLORS.RED,COLORS.BLACK,null,GoToDatePicker,16,null,32);
@@ -127,23 +141,30 @@ function DisableInput(){
 }
 
 function GoToTimePicker(){
-  hmRoute.push({url:'/page/gt/home/index.page.select_time',params:JSON.stringify(itemInfo)});
+  hmRoute.push({url:'/page/gt/home/index.page.select_time',params:JSON.stringify(ItemInfo)});
 }
 
 function GoToDatePicker(){
-  hmRoute.push({url:'/page/gt/home/index.page.select_date',params:JSON.stringify(itemInfo)});
+  hmRoute.push({url:'/page/gt/home/index.page.select_date',params:JSON.stringify(ItemInfo)});
 }
 
 function AddEditItem(){
-  if(itemInfo.isEdit==true){
+  Logger.log("Is editing ",ItemInfo.edit);
+  if(ItemInfo.edit.isEdit){
     Logger.log("Editing complete");
   }
   else{
-    Logger.log(JSON.stringify(itemInfo.date_picker));
-      const _itemDate=new Date(itemInfo.date_picker.year,itemInfo.date_picker.month-1,itemInfo.date_picker.day,itemInfo.time_picker.hour,itemInfo.time_picker.minute,itemInfo.time_picker.seconds);
+    Logger.log(JSON.stringify(ItemInfo.date_picker));
+      const _itemDate=new Date(ItemInfo.date_picker.year,ItemInfo.date_picker.month-1,ItemInfo.date_picker.day,ItemInfo.time_picker.hour,ItemInfo.time_picker.minute,ItemInfo.time_picker.seconds);
       const _itemTime=_itemDate.getTime();
-      const _itemData={title:itemInfo.title,time:_itemTime}
+      const _itemData={title:ItemInfo.title,time:_itemTime}
       RTLY.AddItemToStorage(_itemData);
       hmRoute.push({url:'/page/gt/home/index.page'});
   }
+}
+
+
+function SetTodayItemData(){
+  ItemInfo.time_picker={hour:time.getHours(),minute:time.getMinutes(),seconds:time.getSeconds()};
+  ItemInfo.date_picker={day:time.getDate(),month:time.getMonth(),year:time.getFullYear()};
 }

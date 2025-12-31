@@ -34,8 +34,7 @@
             "page/gt/home/index.page.select_time",
             "page/gt/home/index.page.select_date",
             "page/gt/home/index.page.item_edit",
-            "page/gt/home/index.page.settings",
-            "page/gt/home/index.page.item_edit_details"
+            "page/gt/home/index.page.settings"
           ]
         }
       },
