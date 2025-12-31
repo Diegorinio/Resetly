@@ -348,6 +348,7 @@ export function GetItemFromStorage(item){
   return _item;
 }
 export function OverwriteItemInStorage(item){
+  Logger.log(JSON.stringify(item));
   const _item=GetItemFromStorage(item);
   _item.id=item.id;
   _item.title=item.title;
