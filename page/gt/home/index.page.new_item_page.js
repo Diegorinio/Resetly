@@ -22,6 +22,7 @@ Page({
     ItemInfo.edit.item=null;
     if(params&&params!=="undefined"){
       const _params=JSON.parse(params);
+      Logger.log("current params: ",params);
       if(_params.edit?.isEdit){
         Logger.log("Edit");
         ItemInfo.edit.isEdit=true;
@@ -29,7 +30,10 @@ Page({
         ItemInfo.title=_params.edit.item.title;
         ItemInfo.time=_params.edit.item.time;
         if(_params.time_picker&&_params.date_picker){
-          ItemInfo.time_picker=_params.time_picker;
+          // ItemInfo.time_picker=_params.time_picker;
+          ItemInfo.time_picker.hour=_params.time_picker.hour;
+          ItemInfo.time_picker.minute=_params.time_picker.minute;
+          ItemInfo.time_picker.seconds=_params.time_picker.seconds;
           ItemInfo.date_picker=_params.date_picker;
         }
         else{
@@ -46,13 +50,20 @@ Page({
       }
       }
       else{
+        // ItemInfo.time_picker=_params.time_picker;
+        ItemInfo.time_picker.hour=_params.time_picker.hour;
+        ItemInfo.time_picker.minute=_params.time_picker.minute;
+        ItemInfo.time_picker.seconds=_params.time_picker.seconds;
+        ItemInfo.date_picker=_params.date_picker;
+        ItemInfo.title=_params.title;
+        ItemInfo.time=_params.time;
         Logger.log("Adding new");
-        SetTodayItemData();
       }
     }
     else{
       SetTodayItemData();
     }
+    Logger.log("Params after: ", JSON.stringify(ItemInfo));
     hmUI.setStatusBarVisible(false);
   },
   build() {
@@ -153,18 +164,12 @@ function AddEditItem(){
   const _itemDate=new Date(ItemInfo.date_picker.year,ItemInfo.date_picker.month-1,ItemInfo.date_picker.day,ItemInfo.time_picker.hour,ItemInfo.time_picker.minute,ItemInfo.time_picker.seconds);
       const _itemTime=_itemDate.getTime();
   if(ItemInfo.edit.isEdit){
-    Logger.log("cghuuuujhjjjj: ", JSON.stringify(ItemInfo.edit));
     const _itemData={title:ItemInfo.title,time:_itemTime.toString(),id:ItemInfo.edit.item.id};
     RTLY.OverwriteItemInStorage(_itemData);
   }
   else{
     const _itemData={title:ItemInfo.title,time:_itemTime};
-    // Logger.log(JSON.stringify(ItemInfo.date_picker));
-      // const _itemDate=new Date(ItemInfo.date_picker.year,ItemInfo.date_picker.month-1,ItemInfo.date_picker.day,ItemInfo.time_picker.hour,ItemInfo.time_picker.minute,ItemInfo.time_picker.seconds);
-      // const _itemTime=_itemDate.getTime();
-      // const _itemData={title:ItemInfo.title,time:_itemTime}
-      RTLY.AddItemToStorage(_itemData);
-      // hmRoute.push({url:'/page/gt/home/index.page'});
+    RTLY.AddItemToStorage(_itemData);
   }
   hmRoute.push({url:'/page/gt/home/index.page'});
 }

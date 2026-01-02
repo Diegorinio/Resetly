@@ -19,8 +19,7 @@ Page({
     if(params!=null&&params!=""&&params!=="undefined"){
       const _params=JSON.parse(params);
       RTLY.SetBaseItemDataFromParams(ItemInfo,_params);
-      Logger.log("Is edit: ", ItemInfo.edit);
-
+      Logger.log("Base params", JSON.stringify(_params));
     }
     else{
       hmRoute.back();
