@@ -37,7 +37,7 @@ Page({
         w: 480,
       x: 20,
       y: 120,
-      startYear: ItemInfo.date_picker.year,
+      startYear: ItemInfo.date_picker.year-1,
       endYear: ItemInfo.date_picker.year,
       initYear: ItemInfo.date_picker.year,
       initMonth: ItemInfo.date_picker.month,
@@ -47,10 +47,13 @@ Page({
         const dateObj=datePicker.getProperty(hmUI.MORE,{});
         const {year,month,day}=dateObj;
         if(year<=time.getFullYear()&&month<=time.getMonth()&&day<=time.getDate()){
-        ItemInfo.date_picker.year=year;
-        ItemInfo.date_picker.month=month;
-        ItemInfo.date_picker.day=day;
-        hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(ItemInfo)})
+          ItemInfo.date_picker.year=year;
+          ItemInfo.date_picker.month=month;
+          ItemInfo.date_picker.day=day;
+          hmRoute.push({url:'/page/gt/home/index.page.new_item_page',params:JSON.stringify(ItemInfo)})
+        }
+        else{
+          hmUI.showToast({text:"Cannot set future date"});
         }
     },12);
     btn.Draw();
